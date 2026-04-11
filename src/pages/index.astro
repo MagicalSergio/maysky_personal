@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TestAnimation from "../components/TestAnimation.vue";
+---
+
+<BaseLayout>
+  <TestAnimation client:visible/>
+</BaseLayout>
+<style>
+  h1 {
+    color: orange;
+  }
+</style>
