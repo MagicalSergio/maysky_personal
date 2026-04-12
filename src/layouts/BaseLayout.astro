@@ -1,16 +1,30 @@
 ---
+import "../styles/reset.css";
+import "../styles/fonts.css";
+import "../styles/base.css";
+
 const { title = "maysky", description = "Personal website" } = Astro.props;
 ---
 
+<script>
+  import scroll from "../scripts/scroll";
+</script>
+
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content={description} />
-        <meta name="author" content="maysky" />
-        <title>{title}</title>
-    </head>
-    <body>
-        <slot />
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content="maysky" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
+
+<style lang="scss">
+  body {
+    background: #000000;
+  }
+</style>
