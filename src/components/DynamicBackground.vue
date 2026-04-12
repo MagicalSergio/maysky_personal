@@ -8,18 +8,20 @@ const canvas = useTemplateRef("canvas");
 
 onMounted(() => {
   const scene = new THREE.Scene();
-  console.log('canvas.value: ', canvas.value);
-  console.log('canvas.value.innerWidth: ', canvas.value.getBoundingClientRect().width);
-  console.log('canvas.value.innerHeight: ', canvas.value.innerHeight);
+  scene.background = new THREE.Color("#0B0B0B");
   const camera = new THREE.PerspectiveCamera(
     50,
-    canvas.value.getBoundingClientRect().width / canvas.value.getBoundingClientRect().height,
+    canvas.value.getBoundingClientRect().width /
+      canvas.value.getBoundingClientRect().height,
     0.1,
     1000,
   );
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(canvas.value.getBoundingClientRect().width, canvas.value.getBoundingClientRect().height);
+  renderer.setSize(
+    canvas.value.getBoundingClientRect().width,
+    canvas.value.getBoundingClientRect().height,
+  );
   canvas.value.appendChild(renderer.domElement);
 
   // const controls = new OrbitControls(camera, renderer.domElement);
@@ -169,19 +171,18 @@ onMounted(() => {
     left: 0;
     height: 100%;
     width: 100%;
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 1) 0%,
-        rgba(0, 0, 0, 1) 25%,
-        transparent 100%
-      ),
-      linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 1) 0%,
-        rgba(0, 0, 0, 1) 25%,
-        transparent 100%
-      );
+    background: linear-gradient(
+      to bottom,
+      #0b0b0b 0%,
+      #0b0b0b 35%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 90%,
+      #0b0b0b 100%
+    ),
   }
 }
 </style>
