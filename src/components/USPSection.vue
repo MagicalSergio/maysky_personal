@@ -1,48 +1,79 @@
 <script setup>
-import { onMounted, useTemplateRef, ref } from "vue";
+import { onMounted, useTemplateRef, ref, computed } from "vue";
+import scroll from "../scripts/scroll";
 
 const root = useTemplateRef("root");
+const fixedContainer = useTemplateRef("fixed-container");
 
-const isFixed = ref(false);
-const isScrolled = ref(false);
+const mounted = ref(false);
 
-const initObserver = () => {
-  // 1. Define Callback
-  const callback = (entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        isFixed.value = true;
-      } else {
-        isScrolled.value = root.value.getBoundingClientRect().top < 0;
-        isFixed.value = false;
-      }
-    });
-  };
+const state = ref("pending"); // pending | scrolling | scrolled
 
-  // 2. Observer Options
-  const options = {
-    root: null, // use viewport
-    threshold: 0.25, // 50% visibility
-  };
+const scrollProgress = ref(0);
 
-  // 3. Create Observer
-  const observer = new IntersectionObserver(callback, options);
-
-  // 4. Observe Element
-  const target = root.value;
-  observer.observe(target);
+const onScroll = () => {
+  updateState();
+  updateProgress();
 };
 
-onMounted(() => {
-  initObserver();
+const updateState = () => {
+  const top = root.value.getBoundingClientRect().top;
+  const rootHeight = root.value.getBoundingClientRect().height;
+  const containerHeight = fixedContainer.value.getBoundingClientRect().height;
+
+  if (top > 0) return (state.value = "pending");
+
+  if (Math.abs(top) + containerHeight >= rootHeight)
+    return (state.value = "scrolled");
+
+  return (state.value = "scrolling");
+};
+
+const updateProgress = () => {
+  if (state.value === "pending") return (scrollProgress.value = 0);
+  if (state.value === "scrolled") return (scrollProgress.value = 1);
+
+  const rootTop = root.value.getBoundingClientRect().top;
+  const rootHeight = root.value.getBoundingClientRect().height;
+  const containerHeight = fixedContainer.value.getBoundingClientRect().height;
+  const scrollLength = rootHeight - containerHeight;
+
+  scrollProgress.value = Math.abs(rootTop / scrollLength);
+};
+
+const translation = computed(() => {
+  if (!mounted.value) return;
+  const rootWidth = root.value.getBoundingClientRect().width;
+  const containerWidth = fixedContainer.value.getBoundingClientRect().width;
+  const translationLength = Math.abs(containerWidth - rootWidth);
+  console.log("scrollProgress.value: ", scrollProgress.value);
+  return translationLength * scrollProgress.value;
 });
+
+onMounted(() => {
+  updateState();
+
+  scroll.on("scroll", onScroll);
+
+  mounted.value = true;
+});
+
+const classes = computed(() => ({
+  pending: state.value === "pending",
+  scrolling: state.value === "scrolling",
+  scrolled: state.value === "scrolled",
+}));
 </script>
 
 <template>
-  <div ref="root" class="usp-section" :class="{ scrolled: isScrolled }">
-    <div class="usp-section__fixed-container" :class="{ fixed: isFixed }">
+  <div ref="root" class="usp-section" :class="classes">
+    <div
+      ref="fixed-container"
+      class="usp-section__fixed-container"
+      :style="`transform: translateX(-${translation}px)`"
+    >
       <div class="usp-section__content">
-        >create solutions which helps business_
+        >full-stack engineer -- no stack religion — just working solutions.
       </div>
     </div>
   </div>
@@ -50,10 +81,23 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .usp-section {
+  $root: &;
   height: 400vh;
   overflow-x: hidden;
   display: flex;
   align-items: flex-start;
+
+  &.pending {
+    //
+  }
+
+  &.scrolling {
+    #{$root}__fixed-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  }
 
   &.scrolled {
     align-items: flex-end;
@@ -65,13 +109,6 @@ onMounted(() => {
     width: max-content;
     display: flex;
     align-items: center;
-    position: relative;
-
-    &.fixed {
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
   }
 
   &__content {
