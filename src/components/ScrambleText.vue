@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed, defineProps, watch } from "vue";
+import { ref, computed, defineProps, watch, onMounted } from "vue";
+import { getRandomInt } from "../util/random";
 
 const props = defineProps({
   text: {
@@ -16,26 +17,27 @@ const chars =
 
 const resultText = ref(props.text);
 
-const getRandChar = () => chars[Math.floor(Math.random() * chars.length)];
-const getRandInterval = () => Math.floor(Math.random() * 250);
-const getRandAmount = () => Math.floor(Math.random() * (10 - 2) + 10);
+const getRandChar = () => chars[getRandomInt(0, chars.length - 1)];
 const intervals = ref(Array.from({ length: props.text.length }));
 
 const scrambleChar = (index) => {
   let i = 0;
-  let limit = getRandAmount();
+  let limit = getRandomInt(2, 10);
   clearInterval(intervals.value[index]);
-  intervals.value[index] = setInterval(() => {
-    const splitted = resultText.value.split("");
-    if (i < limit) {
-      splitted[index] = getRandChar();
-    } else {
-      splitted[index] = props.text.charAt(index);
-      clearInterval(intervals.value[index]);
-    }
-    resultText.value = splitted.join("");
-    i++;
-  }, getRandInterval());
+  intervals.value[index] = setInterval(
+    () => {
+      const splitted = resultText.value.split("");
+      if (i < limit) {
+        splitted[index] = getRandChar();
+      } else {
+        splitted[index] = props.text.charAt(index);
+        clearInterval(intervals.value[index]);
+      }
+      resultText.value = splitted.join("");
+      i++;
+    },
+    getRandomInt(50, 150),
+  );
 };
 
 const scramble = () => {
@@ -45,12 +47,28 @@ const scramble = () => {
   });
 };
 
+const initRandomScrambling = () => {
+  const f = () => {
+    const initial = props.text;
+    const randomIndex = getRandomInt(0, initial.length);
+    scrambleChar(randomIndex);
+    clearTimeout(timeout);
+    timeout = setTimeout(f, getRandomInt(1000, 3000));
+  };
+
+  let timeout = setTimeout(f, getRandomInt(1000, 3000));
+};
+
 watch(
   () => props.trigger,
   () => {
     scramble();
   },
 );
+
+onMounted(() => {
+  initRandomScrambling();
+});
 </script>
 
 <template>
