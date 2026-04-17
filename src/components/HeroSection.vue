@@ -14,7 +14,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="hero">
+  <section class="hero">
     <div class="hero__content">
       <h1>
         <ScrambleText text="Maysky" :trigger="scrambleTrigger" />
@@ -24,7 +24,7 @@ onUnmounted(() => {
         <span>Engineer</span>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

@@ -3,31 +3,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroSection from "../components/HeroSection.vue";
 import DynamicBackground from "../components/DynamicBackground.vue";
 import USPSection from "../components/USPSection.vue";
+import PartyBotSection from "../components/PartyBotSection.vue";
 ---
 
 <BaseLayout class="layout">
   <DynamicBackground class="layout__dynamic-bg" client:only />
   <HeroSection client:load />
   <USPSection client:only />
-  <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem
-        facere ex corrupti obcaecati illo assumenda magni autem, nam voluptatem,
-        beatae dolor perspiciatis nostrum! Hic nesciunt odit nobis ipsam, ab
-        sequi! Deserunt suscipit enim officiis voluptate dignissimos ipsum quod,
-        provident similique amet quae! Soluta adipisci libero, sed obcaecati
-        ducimus veniam odit sunt voluptatem necessitatibus distinctio cumque
-        sint illum dolor molestiae? Quis. A, illum similique repudiandae
-        nesciunt, nulla laboriosam est, velit veritatis soluta expedita
-        provident animi perspiciatis dolorum? Sapiente totam fuga quas iste, sed
-        accusamus quaerat pariatur doloribus provident in, ducimus laudantium.
-        In veritatis delectus quis cum? Illo ut beatae possimus facere esse quam
-        officiis, sapiente dolor asperiores numquam laudantium in magni est vel
-        itaque sed rem voluptatem. Maxime vel mollitia accusantium?
-        Voluptatibus, accusantium, ipsa adipisci illum minima obcaecati neque
-        iusto voluptates, aperiam fugiat tenetur temporibus. Nulla mollitia
-        architecto consequuntur asperiores. Ut at iste asperiores facilis
-        aliquam rem nihil doloribus veniam maiores!
-  </div>
+  <PartyBotSection client:visible />
 </BaseLayout>
 
 <style lang="scss">

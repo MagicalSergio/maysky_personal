@@ -50,7 +50,7 @@ const translation = computed(() => {
   return translationLength * scrollProgress.value;
 });
 
-const EASING = { x1: 0, y1: 0.10, x2: 0.05, y2: 0.20 };
+const EASING = { x1: 0, y1: 0.1, x2: 0.05, y2: 0.2 };
 const ease = cubicBezier(EASING);
 const computedText = computed(() => {
   const splitted = text.split("");
@@ -64,8 +64,6 @@ const calculateUnderlineWidth = (i) => {
   const underline = underlines.find((l) => l.start === i);
   const underlineCharWidth = underline.end - underline.start;
 
-    console.log('underlineCharWidth: ', underlineCharWidth);
-  console.log("computedText.value.length: ", computedText.value.length);
   if (computedText.value.length < i + underlineCharWidth) return 0;
 
   return underlineCharWidth * char.value[0].offsetWidth;
@@ -101,7 +99,7 @@ const classes = computed(() => ({
 </script>
 
 <template>
-  <div ref="root" class="usp-section" :class="classes">
+  <section ref="root" class="usp-section" :class="classes">
     <div
       ref="fixed-container"
       class="usp-section__fixed-container"
@@ -138,7 +136,7 @@ const classes = computed(() => ({
         </span>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>
@@ -224,7 +222,7 @@ const classes = computed(() => ({
     bottom: -10px;
     height: 1rem;
     background: white;
-    transition: width .4s ease-in-out;
+    transition: width 0.4s ease-in-out;
     width: 0;
   }
 
