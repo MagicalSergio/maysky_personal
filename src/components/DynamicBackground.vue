@@ -173,15 +173,15 @@ onMounted(() => {
     width: 100%;
     background: linear-gradient(
       to bottom,
-      #0b0b0b 0%,
-      #0b0b0b 35%,
+      $color-bg-base 0%,
+      $color-bg-base 35%,
       transparent 100%
     ),
     linear-gradient(
       to bottom,
       transparent 0%,
       transparent 90%,
-      #0b0b0b 100%
+      $color-bg-base 100%
     ),
   }
 }

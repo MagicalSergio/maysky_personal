@@ -146,6 +146,7 @@ const classes = computed(() => ({
   overflow-x: hidden;
   display: flex;
   align-items: flex-start;
+  color: $color-font-accent;
 
   &.pending {
     //
@@ -221,7 +222,7 @@ const classes = computed(() => ({
     left: 0;
     bottom: -10px;
     height: 1rem;
-    background: white;
+    background: $color-font-accent;
     transition: width 0.4s ease-in-out;
     width: 0;
   }

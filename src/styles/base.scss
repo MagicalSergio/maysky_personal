@@ -1,6 +1,7 @@
 html {
     font-family: "JetBrains Mono", sans-serif;
-    color: #ffffff;
+    letter-spacing: -5%;
+    color: $color-font-base;
     font-size: 7px;
 
     @media (min-width: 375px)  { font-size: 8px;  }
@@ -17,4 +18,9 @@ html {
     @media (min-width: 2560px) { font-size: 24px; }
     @media (min-width: 3200px) { font-size: 28px; }
     @media (min-width: 3840px) { font-size: 32px; }
+}
+
+body {
+    line-height: 100%;
+    background: $color-bg-base;
 }

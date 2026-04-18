@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@types/three": "^0.183.1",
-    "@types/web": "^0.0.345",
     "sass-embedded": "^1.99.0"
   }
 }

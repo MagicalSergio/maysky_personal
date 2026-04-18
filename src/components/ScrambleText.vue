@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, defineProps, watch, onMounted } from "vue";
+import { ref, defineProps, watch, onMounted } from "vue";
 import { getRandomInt } from "../util/random";
 
 const props = defineProps({
@@ -72,7 +72,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="scramble-text">
+  <span class="scramble-text">
     <span
       v-for="(char, i) in resultText"
       :key="char"
@@ -82,7 +82,7 @@ onMounted(() => {
     >
       {{ char }}
     </span>
-  </div>
+  </span>
 </template>
 
 <style lang="scss" scoped>

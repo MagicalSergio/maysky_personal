@@ -4,13 +4,15 @@ import HeroSection from "../components/HeroSection.vue";
 import DynamicBackground from "../components/DynamicBackground.vue";
 import USPSection from "../components/USPSection.vue";
 import PartyBotSection from "../components/PartyBotSection.vue";
+import CVSection from "../components/CVSection.vue";
 ---
 
 <BaseLayout class="layout">
-  <DynamicBackground class="layout__dynamic-bg" client:only />
-  <HeroSection client:load />
+  <!-- <DynamicBackground class="layout__dynamic-bg" client:only /> -->
+  <!-- <HeroSection client:load /> -->
   <USPSection client:only />
-  <PartyBotSection client:visible />
+  <!-- <PartyBotSection client:visible /> -->
+  <CVSection client:visible />
 </BaseLayout>
 
 <style lang="scss">
