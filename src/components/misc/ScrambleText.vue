@@ -91,8 +91,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <span class="scramble-text">
-    <span
+  <div class="scramble-text">
+    <div
       v-for="(char, i) in resultText"
       :key="char"
       class="scramble-text__char"
@@ -100,22 +100,24 @@ onMounted(() => {
       @mouseenter.stop="scrambleChar(i)"
     >
       {{ char }}
-    </span>
-  </span>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .scramble-text {
   user-select: none;
+  display: inline-block;
+  line-height: 1;
 
   &__char {
-    background: #4d4d4d;
-    line-height: 75%;
+    background: black;
+    line-height: 1;
     display: inline-block;
-    color: black;
+    color: $color-font-base;
 
     &_initial {
-      background: transparent;
+      background: inherit;
       color: inherit;
     }
   }

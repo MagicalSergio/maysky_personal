@@ -127,7 +127,7 @@ const initStackItemsScrambling = () => {
         }
       });
     },
-    { rootMargin: "-40% 0px -40% 0px" },
+    { rootMargin: "-50% 0px -50% 0px" },
   );
 
   cvItems.value.forEach((el) => observer.observe(el));
