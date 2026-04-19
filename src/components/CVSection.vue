@@ -2,6 +2,11 @@
 import BaseContainer from "./base/BaseContainer.vue";
 import ScrambleText from "./ScrambleText.vue";
 import CVTimeline from "./CVTimeline.vue";
+import { onMounted, ref, useTemplateRef } from "vue";
+
+const itemsContainer = useTemplateRef("items-container");
+const cvItems = ref([]);
+const itemsContainerHeight = ref(0);
 
 const data = {
   items: [
@@ -15,6 +20,33 @@ const data = {
     {},
   ],
 };
+
+const calculateHeight = () => {
+  itemsContainerHeight.value = cvItems.value.reduce((acc, cv, i) => {
+    if (i + 1 === cvItems.value.length) {
+      return acc + cv.getBoundingClientRect().height / 2;
+    }
+
+    return acc + cv.getBoundingClientRect().height;
+  }, 0);
+};
+
+const lastItemDate = useTemplateRef("last-item-date");
+const lastItemMargin = ref(0);
+const calculateLastItemMargin = () => {
+  const parent = lastItemDate.value.parentElement;
+  const parentStyle = getComputedStyle(parent);
+  const innerHeight =
+    parent.clientHeight -
+    parseFloat(parentStyle.paddingTop) -
+    parseFloat(parentStyle.paddingBottom);
+  lastItemMargin.value = innerHeight / 2 - lastItemDate.value.offsetHeight / 2;
+};
+
+onMounted(() => {
+  calculateHeight();
+  calculateLastItemMargin();
+});
 </script>
 
 <template>
@@ -24,12 +56,15 @@ const data = {
       to <span>versatile engineer <ScrambleText text="\" /></span>
     </div>
 
-    <div class="cv-section__items">
+    <div ref="items-container" class="cv-section__items">
       <BaseContainer class="cv-section__timeline-container">
-        <CVTimeline class="cv-section__timeline" />
+        <CVTimeline
+          :height="itemsContainerHeight"
+          class="cv-section__timeline"
+        />
       </BaseContainer>
 
-      <div class="cv-section__item">
+      <div :ref="(el) => cvItems.push(el)" class="cv-section__item">
         <BaseContainer>
           <div class="cv-section__item-content">
             <div class="cv-section__item-date">
@@ -58,7 +93,7 @@ const data = {
           </div>
         </BaseContainer>
       </div>
-      <div class="cv-section__item">
+      <div :ref="(el) => cvItems.push(el)" class="cv-section__item">
         <BaseContainer>
           <div class="cv-section__item-content">
             <div class="cv-section__item-date">
@@ -73,7 +108,7 @@ const data = {
           </div>
         </BaseContainer>
       </div>
-      <div class="cv-section__item">
+      <div :ref="(el) => cvItems.push(el)" class="cv-section__item">
         <BaseContainer>
           <div class="cv-section__item-content">
             <div class="cv-section__item-date">
@@ -95,7 +130,7 @@ const data = {
           </div>
         </BaseContainer>
       </div>
-      <div class="cv-section__item">
+      <div :ref="(el) => cvItems.push(el)" class="cv-section__item">
         <BaseContainer>
           <div class="cv-section__item-content">
             <div class="cv-section__item-date">
@@ -113,10 +148,14 @@ const data = {
           </div>
         </BaseContainer>
       </div>
-      <div class="cv-section__item">
+      <div :ref="(el) => cvItems.push(el)" class="cv-section__item">
         <BaseContainer>
           <div class="cv-section__item-content">
-            <div class="cv-section__item-date">
+            <div
+              class="cv-section__item-date"
+              :style="{ 'margin-bottom': `${lastItemMargin}px` }"
+              ref="last-item-date"
+            >
               october 2018 — may 2019 (8 months)
             </div>
             <div class="cv-section__item-text">
@@ -159,6 +198,13 @@ const data = {
     &:nth-child(2) {
       #{$root}__item-content {
         padding-top: 0;
+      }
+    }
+
+    &:last-child {
+      #{$root}__item-date {
+        // margin-bottom: 100%;
+        // margin-bottom: calc(100% / 4);
       }
     }
   }

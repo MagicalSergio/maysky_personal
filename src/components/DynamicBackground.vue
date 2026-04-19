@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { onMounted, useTemplateRef } from "vue";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import scroll from "../scripts/scroll";
+import { getScroll } from "../scripts/scroll";
 
 const canvas = useTemplateRef("canvas");
 
@@ -125,7 +125,7 @@ onMounted(() => {
   }
   renderer.setAnimationLoop(animate);
 
-  scroll.on("scroll", (ev) => {
+  getScroll().on("scroll", (ev) => {
     camera.position.y = Math.min(BASE_Y + ev.scroll * SCROLL_Y, 0.5);
     camera.position.z = ev.scroll * SCROLL_Z;
     const rotX = THREE.MathUtils.clamp(

@@ -7,7 +7,8 @@ const { title = "maysky", description = "Personal website" } = Astro.props;
 ---
 
 <script>
-  import scroll from "../scripts/scroll";
+  import { getScroll } from "../scripts/scroll";
+  getScroll();
 </script>
 
 <html>
