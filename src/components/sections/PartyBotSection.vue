@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, useTemplateRef } from "vue";
-import BaseContainer from "./base/BaseContainer.vue";
+import BaseContainer from "../base/BaseContainer.vue";
 import lottie from "lottie-web";
 
 const animContainer = useTemplateRef("anim-container");

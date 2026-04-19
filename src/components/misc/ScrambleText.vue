@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps, watch, onMounted } from "vue";
-import { getRandomInt } from "../util/random";
+import { getRandomInt } from "../../util/random";
 
 const props = defineProps({
   text: {
@@ -9,6 +9,14 @@ const props = defineProps({
   },
   trigger: {
     default: false,
+  },
+  randomScrambleCount: {
+    type: Number,
+    default: 1,
+  },
+  randomScramble: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -42,21 +50,32 @@ const scrambleChar = (index) => {
 
 const scramble = () => {
   const initial = props.text;
-  initial.split("").forEach((c, i) => {
+  initial.split("").forEach((_, i) => {
     scrambleChar(i);
   });
 };
 
 const initRandomScrambling = () => {
-  const f = () => {
-    const initial = props.text;
-    const randomIndex = getRandomInt(0, initial.length);
-    scrambleChar(randomIndex);
-    clearTimeout(timeout);
-    timeout = setTimeout(f, getRandomInt(1000, 3000));
+  const initial = props.text;
+
+  const iterate = () => {
+    Array.from({ length: props.randomScrambleCount }).forEach(() => {
+      const timeout = setTimeout(
+        () => {
+          const randomIndex = getRandomInt(0, initial.length);
+          scrambleChar(randomIndex);
+          clearTimeout(timeout);
+        },
+        getRandomInt(1000, 3000),
+      );
+    });
   };
 
-  let timeout = setTimeout(f, getRandomInt(1000, 3000));
+  iterate();
+
+  setInterval(() => {
+    iterate();
+  }, 2000);
 };
 
 watch(
@@ -67,7 +86,7 @@ watch(
 );
 
 onMounted(() => {
-  initRandomScrambling();
+  if (props.randomScramble) initRandomScrambling();
 });
 </script>
 
@@ -87,7 +106,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .scramble-text {
-  cursor: pointer;
+  user-select: none;
 
   &__char {
     background: #4d4d4d;
@@ -97,8 +116,7 @@ onMounted(() => {
 
     &_initial {
       background: transparent;
-      color: white;
-      // color: rgb(255, 0, 140);
+      color: inherit;
     }
   }
 }

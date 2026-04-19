@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, useTemplateRef, watch } from "vue";
-import { getScroll } from "../scripts/scroll";
+import { getScroll } from "../../scripts/scroll";
 
 const progress = ref(0.5);
 const props = defineProps({
@@ -13,7 +13,7 @@ const props = defineProps({
 const rail = useTemplateRef("rail");
 const standardCell = useTemplateRef("standard-cell");
 
-const isMounted = ref(false);
+const isMountCompleted = ref(false);
 const cells = ref([]);
 
 const heightPX = computed(() => `${props.height}px`);
@@ -30,12 +30,7 @@ const updateCellsByProgress = () => {
   );
 };
 
-watch(() => progress.value, updateCellsByProgress);
-watch(() => props.height, computeCells);
-
-onMounted(() => {
-  computeCells();
-  updateCellsByProgress();
+const initScrollHandler = () => {
   getScroll().on("scroll", (ev) => {
     const offset = window.innerHeight / 2;
     const length = rail.value.getBoundingClientRect().height;
@@ -43,25 +38,34 @@ onMounted(() => {
       ev.actualScroll + rail.value.getBoundingClientRect().top - offset;
     progress.value = (ev.actualScroll - start) / length;
   });
+};
 
-  isMounted.value = true;
+watch(() => progress.value, updateCellsByProgress);
+watch(() => props.height, computeCells);
+
+onMounted(() => {
+  computeCells();
+  updateCellsByProgress();
+  initScrollHandler();
+  isMountCompleted.value = true;
 });
 </script>
 
 <template>
-  <div class="cv-timeline">
-    <div ref="rail" class="cv-timeline__rail">
+  <div class="vertical-timeline">
+    <div ref="rail" class="vertical-timeline__rail">
       <div
-        v-if="!isMounted"
+        v-if="!isMountCompleted"
         ref="standard-cell"
-        class="cv-timeline__cell"
-      ></div>
+        class="vertical-timeline__cell"
+      />
+
       <template v-else>
         <div
           v-for="(c, i) in cells"
           :key="`cell-${i}`"
-          class="cv-timeline__cell"
-          :class="{ 'cv-timeline__cell_active': c }"
+          class="vertical-timeline__cell"
+          :class="{ 'vertical-timeline__cell_active': c }"
         ></div>
       </template>
     </div>
@@ -69,7 +73,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.cv-timeline {
+.vertical-timeline {
   &__rail {
     height: v-bind(heightPX);
     width: 1rem;

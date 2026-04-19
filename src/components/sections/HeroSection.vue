@@ -1,5 +1,5 @@
 <script setup>
-import ScrambleText from "./ScrambleText.vue";
+import ScrambleText from "../misc/ScrambleText.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 
 const scrambleTrigger = ref(false);
@@ -40,6 +40,7 @@ onUnmounted(() => {
     text-transform: uppercase;
     line-height: 1;
     font-weight: 700;
+    color: $color-font-accent;
   }
 
   &__sub-title {

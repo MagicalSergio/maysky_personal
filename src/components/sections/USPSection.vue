@@ -1,17 +1,13 @@
 <script setup>
 import { onMounted, useTemplateRef, ref, computed } from "vue";
-import { cubicBezier } from "../util/cubicBezier";
-import { getScroll } from "../scripts/scroll";
+import { cubicBezier } from "../../util/cubicBezier";
+import { getScroll } from "../../scripts/scroll";
 
 const root = useTemplateRef("root");
 const fixedContainer = useTemplateRef("fixed-container");
 
-const text = "no stack religion -- applying experience -- creating solutions;";
-const underlines = [
-  { start: 0, end: 8 },
-  { start: 30, end: 40 },
-  { start: 53, end: 62 },
-];
+const text = "no stack religion -- imagine -- prototype -- create;";
+const underlines = [{ start: 45, end: 51 }];
 
 const mounted = ref(false);
 
