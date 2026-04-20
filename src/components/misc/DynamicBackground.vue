@@ -1,7 +1,14 @@
 <script setup>
 import * as THREE from "three";
-import { onMounted, onUnmounted, useTemplateRef } from "vue";
+import { computed, onMounted, onUnmounted, useTemplateRef } from "vue";
 import { getScroll } from "../../scripts/scroll";
+
+const props = defineProps({
+  mod: {
+    type: String,
+    default: "",
+  },
+});
 
 const TILE_SIZE = 5;
 const SPEED = 0.002;
@@ -83,7 +90,9 @@ const initScene = (el) => {
   return { scene, camera, renderer, tiles };
 };
 
-const initScrollHandler = (camera, tiles) => {
+const initScrollHandler = (camera, tiles, canvasEl) => {
+  const lenis = getScroll();
+  const canvasTop = canvasEl.getBoundingClientRect().top + lenis.scroll;
   let currentSpeed = SPEED;
 
   const animate = (renderer, scene) => {
@@ -101,12 +110,14 @@ const initScrollHandler = (camera, tiles) => {
     renderer.render(scene, camera);
   };
 
-  getScroll().on("scroll", (ev) => {
-    camera.position.y = Math.min(BASE_Y + ev.scroll * SCROLL_Y, 0.5);
-    camera.position.z = ev.scroll * SCROLL_Z;
+  lenis.on("scroll", (ev) => {
+    const localScroll = Math.max(0, ev.scroll - canvasTop);
+
+    camera.position.y = Math.min(BASE_Y + localScroll * SCROLL_Y, 0.5);
+    camera.position.z = localScroll * SCROLL_Z;
 
     const rotX = THREE.MathUtils.clamp(
-      BASE_ROT_X + ev.scroll * SCROLL_ROT_X,
+      BASE_ROT_X + localScroll * SCROLL_ROT_X,
       -Math.PI / 2,
       Math.PI / 2,
     );
@@ -114,8 +125,8 @@ const initScrollHandler = (camera, tiles) => {
     currentSpeed = SPEED * (1 - THREE.MathUtils.clamp(progress, 0, 1));
     camera.rotation.set(
       rotX,
-      ev.scroll * SCROLL_ROT_Y,
-      ev.scroll * SCROLL_ROT_Z,
+      localScroll * SCROLL_ROT_Y,
+      localScroll * SCROLL_ROT_Z,
     );
   });
 
@@ -124,7 +135,7 @@ const initScrollHandler = (camera, tiles) => {
 
 onMounted(() => {
   const { scene, camera, renderer, tiles } = initScene(canvas.value);
-  const animate = initScrollHandler(camera, tiles);
+  const animate = initScrollHandler(camera, tiles, canvas.value);
 
   renderer.setAnimationLoop(() => animate(renderer, scene));
 
@@ -140,10 +151,14 @@ onMounted(() => {
     renderer.setAnimationLoop(null);
   });
 });
+
+const classes = computed(() => ({
+  [`dynamic-background_${props.mod}`]: props.mod,
+}));
 </script>
 
 <template>
-  <div class="dynamic-background">
+  <div class="dynamic-background" :class="classes">
     <div class="dynamic-background__canvas" ref="canvas"></div>
     <div class="dynamic-background__gradient"></div>
   </div>
@@ -151,9 +166,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .dynamic-background {
-  position: relative;
-  width: 100%;
-  height: 100vh;
+  $root: &;
 
   &__canvas {
     position: absolute;
@@ -182,6 +195,24 @@ onMounted(() => {
         transparent 90%,
         $color-bg-base 100%
       );
+  }
+
+  &_footer {
+    #{$root}__gradient {
+          background:
+      linear-gradient(
+        to bottom,
+        $color-bg-base 0%,
+        $color-bg-base 50%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 70%,
+        $color-bg-base 90%
+      );
+    }
   }
 }
 </style>

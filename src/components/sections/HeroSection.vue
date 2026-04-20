@@ -1,6 +1,7 @@
 <script setup>
-import ScrambleText from "../misc/ScrambleText.vue";
 import { onMounted, onUnmounted, ref } from "vue";
+import ScrambleText from "../misc/ScrambleText.vue";
+import DynamicBackground from "../misc/DynamicBackground.vue";
 
 const scrambleTrigger = ref(false);
 let interval = null;
@@ -15,6 +16,8 @@ onUnmounted(() => {
 
 <template>
   <section class="hero">
+    <DynamicBackground class="hero__bg" />
+
     <div class="hero__content">
       <h1>
         <ScrambleText text="Maysky" :trigger="scrambleTrigger" />
@@ -35,12 +38,16 @@ onUnmounted(() => {
   justify-content: center;
   height: 100vh;
 
-  h1 {
-    font-size: 260px;
-    text-transform: uppercase;
-    line-height: 1;
-    font-weight: 700;
-    color: $color-font-accent;
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &__content {
+    position: relative;
   }
 
   &__sub-title {
@@ -58,6 +65,14 @@ onUnmounted(() => {
       flex-shrink: 0;
       flex-grow: 1;
     }
+  }
+
+  h1 {
+    font-size: 260px;
+    text-transform: uppercase;
+    line-height: 1;
+    font-weight: 700;
+    color: $color-font-accent;
   }
 }
 </style>

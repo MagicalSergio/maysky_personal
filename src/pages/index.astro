@@ -9,22 +9,29 @@ import ProjectsSection from "../components/sections/ProjectsSection.vue"
 ---
 
 <BaseLayout class="layout">
-  <!-- <DynamicBackground class="layout__dynamic-bg" client:only />
   <HeroSection client:load />
   <USPSection client:visible />
-  <CVSection client:visible /> -->
+  <CVSection client:visible />
   <ProjectsSection client:visible />
-  <div style="margin: 300px 0"></div>
+  <!-- <DynamicBackground class="layout__dynamic-bg-footer" client:only /> -->
+  <!-- <div style="margin: 100rem 0"></div> -->
 </BaseLayout>
 
 <style lang="scss">
-  .layout {
-    &__dynamic-bg {
-      position: absolute !important;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
-  }
+  // .layout {
+  //   position: relative;
+
+  //   &__dynamic-bg-hero {
+  //     position: absolute !important;
+  //     top: 0;
+  //     right: 0;
+  //     left: 0;
+  //   }
+
+  //   &__dynamic-bg-footer {
+  //     position: absolute !important;
+  //     left: 0;
+  //     bottom: 0;
+  //   }
+  // }
 </style>

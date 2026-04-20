@@ -27,8 +27,9 @@ onMounted(() => {
     <div class="projects-section__head">
       <BaseContainer>
         <TextWriter
-          text='i build purposeful tools for myself and my <span class="l">loved</span> ones<span class="u">_</span>'
-          :duration="5000"
+          text='i build purposeful tools for myself and my <span class="l">loved</span> ones'
+          :duration="4000"
+          keep-cursor
         />
       </BaseContainer>
     </div>
@@ -83,7 +84,7 @@ onMounted(() => {
     <!-- PartyBot END -->
 
     <!-- TrueNews BEGIN -->
-    <div class="projects-section__project project">
+    <div class="projects-section__project project project_dark">
       <BaseContainer>
         <div class="project__container">
           <div class="project__true-news-media">
@@ -242,6 +243,10 @@ onMounted(() => {
     grid-column: 1 / span 4;
     padding-right: 1rem;
   }
+
+  &_dark {
+    background: $color-bg-add-1;
+  }
 }
 
 .party-bot-anim {
@@ -275,32 +280,17 @@ onMounted(() => {
 
 .projects-section {
   &__head {
-    padding: 7rem 0;
     font-size: 4rem;
     text-indent: calc(50% + 1rem);
     width: 100%;
     height: 100vh;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     background: $color-bg-add-1;
 
     :deep(.l) {
       color: $color-font-accent-2;
     }
-
-    :deep(.u) {
-      animation: blink 1s step-end infinite;
-    }
-  }
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
   }
 }
 </style>

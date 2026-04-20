@@ -11,6 +11,10 @@ const props = defineProps({
     type: Number,
     default: 1200,
   },
+  keepCursor: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const textEl = useTemplateRef("text");
@@ -27,12 +31,13 @@ const show = () => {
   const animate = (now) => {
     const t = Math.min((now - start) / duration, 1);
     const progress = ease(t);
-    actualText.value = props.text.slice(0, Math.round(progress * total)) + '_';
+    actualText.value = props.text.slice(0, Math.round(progress * total)) + "_";
 
     if (t < 1) {
       requestAnimationFrame(animate);
     } else {
-      actualText.value = props.text;
+      actualText.value =
+        props.text + (props.keepCursor ? '<span class="u">_</span>' : "");
     }
   };
 
@@ -40,14 +45,17 @@ const show = () => {
 };
 
 onMounted(() => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        observer.disconnect();
-        show();
-      }
-    });
-  }, { rootMargin: "-25% 0px -25% 0px" });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          observer.disconnect();
+          show();
+        }
+      });
+    },
+    { rootMargin: "-25% 0px -25% 0px" },
+  );
 
   observer.observe(textEl.value);
 });
@@ -63,6 +71,20 @@ onMounted(() => {
 <style lang="scss" scoped>
 .text-writer {
   position: relative;
+
+  :deep(.u) {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
 
   &__fake {
     visibility: hidden;

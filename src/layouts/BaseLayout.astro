@@ -2,6 +2,7 @@
 import "../styles/reset.css";
 import "../styles/fonts.css";
 import "../styles/base.scss";
+import FooterComponent from "./FooterComponent.vue";
 
 const { title = "maysky", description = "Personal website" } = Astro.props;
 ---
@@ -21,5 +22,6 @@ const { title = "maysky", description = "Personal website" } = Astro.props;
   </head>
   <body>
     <slot />
+    <FooterComponent client:visible />
   </body>
 </html>

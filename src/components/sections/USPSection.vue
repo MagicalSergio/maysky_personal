@@ -6,8 +6,8 @@ import { getScroll } from "../../scripts/scroll";
 const root = useTemplateRef("root");
 const fixedContainer = useTemplateRef("fixed-container");
 
-const text = "no stack religion -- imagine -- prototype -- create;";
-const underlines = [{ start: 45, end: 51 }];
+const text = "from nothing -- imagine -- design -- create;";
+const underlines = [{ start: 37, end: 43 }];
 
 const mounted = ref(false);
 
