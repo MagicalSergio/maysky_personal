@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, useTemplateRef } from "vue";
+import { onMounted, useTemplateRef, ref, onUnmounted } from "vue";
 import lottie from "lottie-web";
 import BaseContainer from "../base/BaseContainer.vue";
 import TextWriter from "../misc/TextWriter.vue";
@@ -11,7 +11,7 @@ import mayskyVpnPreviewImg from "../../assets/images/maysky-vpn@15xnew.jpg?url";
 
 const partyBotAnimationContainer = useTemplateRef("party-bot-anim-container");
 
-onMounted(() => {
+const loadAnimation = () => {
   lottie.loadAnimation({
     container: partyBotAnimationContainer.value,
     renderer: "svg",
@@ -19,7 +19,37 @@ onMounted(() => {
     autoplay: true,
     path: "/src/public/party-bot-anim.json",
   });
-});
+};
+
+onMounted(loadAnimation);
+
+let observer = null;
+const stackBlocks = [];
+const triggers = ref([]);
+
+const initStackObserver = () => {
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        const i = stackBlocks.indexOf(e.target);
+        triggers.value[i] = true;
+        observer.unobserve(e.target);
+      }
+    });
+  });
+
+  stackBlocks.forEach((sb) => {
+    triggers.value.push(false);
+    observer.observe(sb);
+  });
+};
+
+const disconnectObserver = () => {
+  if (observer) observer.disconnect();
+};
+
+onMounted(initStackObserver);
+onUnmounted(disconnectObserver);
 </script>
 
 <template>
@@ -40,42 +70,58 @@ onMounted(() => {
         <div class="project__container">
           <div class="project__party-bot-anim">
             <div class="party-bot-anim">
-              <div
-                ref="party-bot-anim-container"
-                class="party-bot-anim__container"
-              />
+              <div ref="party-bot-anim-container" class="party-bot-anim__container" />
             </div>
           </div>
 
           <div class="project__info">
             <div class="project__head">
-              <h2 class="project__title">party-bot</h2>
-
               <a
                 href="https://github.com/MagicalSergio/super-party-bot"
                 target="_blank"
                 class="project__link"
               >
-                <GHIcon />
-                <LinkArrow />
+                <h2 class="project__title">
+                  <TextWriter text="party-bot" />
+                </h2>
+
+                <div class="project__gh-link">
+                  <GHIcon class="project__gh-icon" />
+                  <LinkArrow class="project__gh-arrow" />
+                </div>
               </a>
             </div>
 
-            <div class="project__subtitle">an AI-chat assistant</div>
+            <div class="project__subtitle">
+              <TextWriter text="an AI-chat assistant" />
+            </div>
 
             <ul class="project__features">
-              <li>\1 multiple switchable AI personalities</li>
-              <li>\2 context saving and updating</li>
-              <li>\3 proxied by shadowsocks (_outdated)</li>
+              <li>
+                \1
+                <TextWriter text="multiple switchable AI personalities" />
+              </li>
+              <li>
+                \2
+                <TextWriter text="context saving and updating" />
+              </li>
+              <li>
+                \3
+                <TextWriter text="proxied by shadowsocks (_outdated)" />
+              </li>
             </ul>
 
-            <div class="project__stack">
-              <ScrambleText :random-scramble="false" text="node" />
-              <ScrambleText :random-scramble="false" text="ts" />
-              <ScrambleText :random-scramble="false" text="sqlite" />
-              <ScrambleText :random-scramble="false" text="typeorm" />
-              <ScrambleText :random-scramble="false" text="shadowsocks" />
-              <ScrambleText :random-scramble="false" text="grok" />
+            <div
+              :ref="(el) => stackBlocks.push(el)"
+              :style="{ opacity: triggers[0] ? '1' : '0' }"
+              class="project__stack"
+            >
+              <ScrambleText :random-scramble="false" :trigger="triggers[0]" text="node" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[0]" text="ts" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[0]" text="sqlite" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[0]" text="typeorm" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[0]" text="shadowsocks" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[0]" text="grok" />
             </div>
           </div>
         </div>
@@ -93,37 +139,64 @@ onMounted(() => {
 
           <div class="project__info">
             <div class="project__head">
-              <h2 class="project__title">true-news</h2>
-
               <a
                 href="https://github.com/MagicalSergio/TrueNews"
                 target="_blank"
                 class="project__link"
               >
-                <GHIcon />
-                <LinkArrow />
+                <h2 class="project__title">
+                  <TextWriter text="true-news" />
+                </h2>
+
+                <div class="project__gh-link">
+                  <GHIcon class="project__gh-icon" />
+                  <LinkArrow class="project__gh-arrow" />
+                </div>
               </a>
             </div>
 
             <div class="project__subtitle">
-              an AI-powered news analyzer and aggregator
+              <TextWriter text="an AI-powered news analyzer and aggregator" />
             </div>
 
             <ul class="project__features">
-              <li>\1 news scraping and parsing from multiple sources</li>
-              <li>\2 handles anti-scraping mechanisms</li>
-              <li>\3 flexible parsers’ setup</li>
-              <li>\4 admin panel</li>
-              <li>\5 AI news clustering and rating (_wip)</li>
+              <li>
+                \1
+                <TextWriter
+                  text="news scraping and parsing from
+                multiple sources"
+                />
+              </li>
+
+              <li>
+                \2
+                <TextWriter text="handles anti-scraping mechanisms" />
+              </li>
+
+              <li>
+                \3
+                <TextWriter text="flexible parsers’ setup" />
+              </li>
+
+              <li>\4 <TextWriter text="admin panel" /></li>
+
+              <li>
+                \5
+                <TextWriter text="AI news clustering and rating (_wip)" />
+              </li>
             </ul>
 
-            <div class="project__stack">
-              <ScrambleText :random-scramble="false" text="python" />
-              <ScrambleText :random-scramble="false" text="flask" />
-              <ScrambleText :random-scramble="false" text="sqlite" />
-              <ScrambleText :random-scramble="false" text="sqlalchemy" />
-              <ScrambleText :random-scramble="false" text="playwright" />
-              <ScrambleText :random-scramble="false" text="curl-cffi" />
+            <div
+              :ref="(el) => stackBlocks.push(el)"
+              :style="{ opacity: triggers[1] ? '1' : '0' }"
+              class="project__stack"
+            >
+              <ScrambleText :random-scramble="false" :trigger="triggers[1]" text="python" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[1]" text="flask" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[1]" text="sqlite" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[1]" text="sqlalchemy" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[1]" text="playwright" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[1]" text="curl-cffi" />
             </div>
           </div>
         </div>
@@ -144,9 +217,7 @@ onMounted(() => {
               <h2 class="project__title">maysky-vpn</h2>
             </div>
 
-            <div class="project__subtitle">
-              family VPN for censorship fooling
-            </div>
+            <div class="project__subtitle">family VPN for censorship fooling</div>
 
             <ul class="project__features">
               <li>\1 mimics common http/tls traffic</li>
@@ -154,11 +225,15 @@ onMounted(() => {
               <li>\3 while enabled, works only for unavailable resources</li>
             </ul>
 
-            <div class="project__stack">
-              <ScrambleText :random-scramble="false" text="xray" />
-              <ScrambleText :random-scramble="false" text="vless" />
-              <ScrambleText :random-scramble="false" text="xhttp" />
-              <ScrambleText :random-scramble="false" text="reality" />
+            <div
+              :ref="(el) => stackBlocks.push(el)"
+              :style="{ opacity: triggers[2] ? '1' : '0' }"
+              class="project__stack"
+            >
+              <ScrambleText :random-scramble="false" :trigger="triggers[2]" text="xray" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[2]" text="vless" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[2]" text="xhttp" />
+              <ScrambleText :random-scramble="false" :trigger="triggers[2]" text="reality" />
             </div>
           </div>
         </div>
@@ -169,6 +244,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@use "/src/styles/utils.scss" as *;
+
 .project {
   font-size: 1.6rem;
 
@@ -176,6 +253,7 @@ onMounted(() => {
     font-size: 4rem;
     color: $color-font-accent;
     font-weight: 400;
+    white-space: nowrap;
   }
 
   &__container {
@@ -200,19 +278,35 @@ onMounted(() => {
   &__head {
     display: flex;
     gap: 1rem;
-    align-items: flex-start;
     margin-bottom: 2rem;
+  }
+
+  &__gh-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.25rem;
+
+    img {
+      flex-shrink: 0;
+    }
+  }
+
+  &__gh-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &__gh-arrow {
+    width: 1rem;
+    height: 1rem;
   }
 
   &__link {
     display: flex;
     align-items: flex-start;
-    gap: 0.1rem;
+    gap: 1rem;
     color: $color-font-add-2;
-
-    img {
-      flex-shrink: 0;
-    }
+    text-decoration: none;
 
     &:hover {
       color: $color-font-accent;
@@ -225,6 +319,12 @@ onMounted(() => {
 
   &__features {
     margin-bottom: 3rem;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
   }
 
   &__stack {

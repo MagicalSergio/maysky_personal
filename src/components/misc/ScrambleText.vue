@@ -20,8 +20,7 @@ const props = defineProps({
   },
 });
 
-const chars =
-  "!@#$%^&*()_+-=[]{}|;:,.<>?/~`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const chars = "!@#$%^&*()_+-=[]{}|;:,.<>?/~`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const resultText = ref(props.text);
 
@@ -83,6 +82,7 @@ watch(
   () => {
     scramble();
   },
+  { immediate: true, flush: "sync" },
 );
 
 onMounted(() => {

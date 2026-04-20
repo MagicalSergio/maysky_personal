@@ -1,0 +1,6 @@
+<svg viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.3"></circle>
+    <ellipse cx="9" cy="9" rx="3.5" ry="7.5" stroke="currentColor" stroke-width="1.1"></ellipse>
+    <line x1="2" y1="6.5" x2="16" y2="6.5" stroke="currentColor" stroke-width="1.1"></line>
+    <line x1="2" y1="11.5" x2="16" y2="11.5" stroke="currentColor" stroke-width="1.1"></line>
+</svg>
