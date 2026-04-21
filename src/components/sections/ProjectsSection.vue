@@ -15,6 +15,8 @@ import TerminalWrapper from "../misc/TerminalWrapper.vue";
  * Partybot animation
  */
 const partyBotAnimationContainer = useTemplateRef("party-bot-anim-container");
+let partyBotObserver = null;
+
 const loadAnimation = () => {
   lottie.loadAnimation({
     name: "chat",
@@ -25,9 +27,16 @@ const loadAnimation = () => {
   });
 
   lottie.stop("chat");
+
+  partyBotObserver = new IntersectionObserver(([entry]) => {
+    entry.isIntersecting ? lottie.play("chat") : lottie.stop("chat");
+  }, { threshold: 0.2 });
+
+  partyBotObserver.observe(partyBotAnimationContainer.value);
 };
 
 onMounted(loadAnimation);
+onUnmounted(() => partyBotObserver?.disconnect());
 
 /**
  * Tech stacks observer
