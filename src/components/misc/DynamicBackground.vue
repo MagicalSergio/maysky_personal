@@ -4,6 +4,10 @@ import { computed, onMounted, onUnmounted, useTemplateRef } from "vue";
 import { getScroll } from "../../scripts/scroll";
 
 const props = defineProps({
+  immediate: {
+    type: Boolean,
+    default: false,
+  },
   mod: {
     type: String,
     default: "",
@@ -36,24 +40,11 @@ const createGridLine = (from, to) => {
 const createGridTile = () => {
   const tile = new THREE.Group();
 
-  for (
-    let l = GRID_RANGE[0];
-    l <= GRID_RANGE[1];
-    l = Math.round((l + LINE_STEP) * 1000) / 1000
-  ) {
-    tile.add(
-      createGridLine(
-        new THREE.Vector3(l, 0.25, 0),
-        new THREE.Vector3(l, 0.25, TILE_SIZE),
-      ),
-    );
+  for (let l = GRID_RANGE[0]; l <= GRID_RANGE[1]; l = Math.round((l + LINE_STEP) * 1000) / 1000) {
+    tile.add(createGridLine(new THREE.Vector3(l, 0.25, 0), new THREE.Vector3(l, 0.25, TILE_SIZE)));
   }
 
-  for (
-    let l = 0;
-    l <= TILE_SIZE;
-    l = Math.round((l + LINE_STEP) * 1000) / 1000
-  ) {
+  for (let l = 0; l <= TILE_SIZE; l = Math.round((l + LINE_STEP) * 1000) / 1000) {
     tile.add(
       createGridLine(
         new THREE.Vector3(GRID_RANGE[0], 0.25, l),
@@ -123,11 +114,7 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
     );
     const progress = (rotX - BASE_ROT_X) / (-Math.PI / 2 - BASE_ROT_X);
     currentSpeed = SPEED * (1 - THREE.MathUtils.clamp(progress, 0, 1));
-    camera.rotation.set(
-      rotX,
-      localScroll * SCROLL_ROT_Y,
-      localScroll * SCROLL_ROT_Z,
-    );
+    camera.rotation.set(rotX, localScroll * SCROLL_ROT_Y, localScroll * SCROLL_ROT_Z);
   });
 
   return animate;
@@ -137,12 +124,10 @@ onMounted(() => {
   const { scene, camera, renderer, tiles } = initScene(canvas.value);
   const animate = initScrollHandler(camera, tiles, canvas.value);
 
-  renderer.setAnimationLoop(() => animate(renderer, scene));
+  if (props.immediate) renderer.setAnimationLoop(animate(renderer, scene));
 
   const visibilityObserver = new IntersectionObserver(([entry]) => {
-    renderer.setAnimationLoop(
-      entry.isIntersecting ? () => animate(renderer, scene) : null,
-    );
+    renderer.setAnimationLoop(entry.isIntersecting ? () => animate(renderer, scene) : null);
   });
   visibilityObserver.observe(canvas.value);
 
@@ -183,35 +168,15 @@ const classes = computed(() => ({
     height: 100%;
     width: 100%;
     background:
-      linear-gradient(
-        to bottom,
-        $color-bg-base 0%,
-        $color-bg-base 35%,
-        transparent 100%
-      ),
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        transparent 90%,
-        $color-bg-base 100%
-      );
+      linear-gradient(to bottom, $color-bg-base 0%, $color-bg-base 35%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, transparent 90%, $color-bg-base 100%);
   }
 
   &_footer {
     #{$root}__gradient {
-          background:
-      linear-gradient(
-        to bottom,
-        $color-bg-base 0%,
-        $color-bg-base 50%,
-        transparent 100%
-      ),
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        transparent 70%,
-        $color-bg-base 90%
-      );
+      background:
+        linear-gradient(to bottom, $color-bg-base 0%, $color-bg-base 50%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, transparent 70%, $color-bg-base 90%);
     }
   }
 }

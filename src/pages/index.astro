@@ -1,37 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroSection from "../components/sections/HeroSection.vue";
-import DynamicBackground from "../components/misc/DynamicBackground.vue";
 import USPSection from "../components/sections/USPSection.vue";
-import PartyBotSection from "../components/sections/PartyBotSection.vue";
 import CVSection from "../components/sections/CVSection.vue";
-import ProjectsSection from "../components/sections/ProjectsSection.vue"
+import ProjectsSection from "../components/sections/ProjectsSection.vue";
 ---
 
 <BaseLayout class="layout">
-  <HeroSection client:load />
-  <USPSection client:visible />
-  <CVSection client:visible />
-  <ProjectsSection client:visible />
-  <!-- <DynamicBackground class="layout__dynamic-bg-footer" client:only /> -->
-  <!-- <div style="margin: 100rem 0"></div> -->
+  <!-- <HeroSection client:load />
+  <USPSection client:load />
+  <CVSection client:load /> -->
+  <ProjectsSection client:load />
 </BaseLayout>
-
-<style lang="scss">
-  // .layout {
-  //   position: relative;
-
-  //   &__dynamic-bg-hero {
-  //     position: absolute !important;
-  //     top: 0;
-  //     right: 0;
-  //     left: 0;
-  //   }
-
-  //   &__dynamic-bg-footer {
-  //     position: absolute !important;
-  //     left: 0;
-  //     bottom: 0;
-  //   }
-  // }
-</style>

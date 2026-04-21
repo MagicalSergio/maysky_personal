@@ -16,12 +16,13 @@ onUnmounted(() => {
 
 <template>
   <section class="hero">
-    <DynamicBackground class="hero__bg" />
+    <DynamicBackground immediate class="hero__bg" />
 
     <div class="hero__content">
       <h1>
         <ScrambleText text="Maysky" :trigger="scrambleTrigger" />
       </h1>
+
       <div class="hero__sub-title">
         <span>Creative</span>
         <span>Engineer</span>
