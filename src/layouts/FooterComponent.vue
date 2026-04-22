@@ -15,7 +15,7 @@ import TextWriter from "../components/misc/TextWriter.vue";
 
     <div class="footer__main">
       <div class="footer__main-line">
-        <TextWriter text='rdy to build smthng <span class="p">great</span>?' :speed="20" />
+        <span><TextWriter text='rdy to build smthng <span class="p">great</span>?' :speed="20" /></span>
       </div>
 
       <div class="footer__main-line">
@@ -43,7 +43,7 @@ import TextWriter from "../components/misc/TextWriter.vue";
         </div>
 
         <div class="footer__copyright-group">
-          <span>copyright © Sergei “Maysky” Grechishkin 2026. all right reserved_</span>
+          <span class="footer__copyright-text">copyright © Sergei “Maysky” Grechishkin 2026. all rights reserved_</span>
         </div>
       </BaseContainer>
     </div>
@@ -57,6 +57,10 @@ import TextWriter from "../components/misc/TextWriter.vue";
   max-height: 100vh;
   display: flex;
   align-items: flex-end;
+
+  @media #{$media-mobile} {
+    // height: 40rem;
+  }
 
   &__bg {
     position: absolute;
@@ -74,6 +78,10 @@ import TextWriter from "../components/misc/TextWriter.vue";
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media #{$media-mobile} {
+      gap: 2rem;
+    }
   }
 
   &__main-line {
@@ -84,6 +92,17 @@ import TextWriter from "../components/misc/TextWriter.vue";
     color: $color-font-accent;
     white-space: nowrap;
 
+    @media #{$media-mobile} {
+      font-size: 2rem;
+      align-items: flex-start;
+      flex-direction: column;
+      white-space: wrap;
+      font-size: 4rem;
+      text-align: center;
+      align-items: center;
+      gap: 0;
+    }
+
     :deep(.p) {
       color: $color-font-accent-2;
     }
@@ -93,6 +112,10 @@ import TextWriter from "../components/misc/TextWriter.vue";
     gap: 0.5rem;
     display: flex;
     background: $color-bg-add-1;
+
+    @media #{$media-mobile} {
+      gap: 1rem;
+    }
   }
 
   &__socials-link {
@@ -100,6 +123,12 @@ import TextWriter from "../components/misc/TextWriter.vue";
     height: 2.5rem;
     width: 2.5rem;
     opacity: 0.33;
+
+    @media #{$media-mobile} {
+      height: 3rem;
+      width: 3rem;
+      opacity: 1;
+    }
 
     &:hover {
       opacity: 1;
@@ -131,6 +160,10 @@ import TextWriter from "../components/misc/TextWriter.vue";
     position: relative;
     width: 100%;
     color: #323232;
+
+    @media #{$media-mobile} {
+      height: auto;
+    }
   }
 
   &__copyright-container {
@@ -138,6 +171,12 @@ import TextWriter from "../components/misc/TextWriter.vue";
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media #{$media-mobile} {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
   }
 
   &__copyright-group {
@@ -146,6 +185,13 @@ import TextWriter from "../components/misc/TextWriter.vue";
     gap: 2rem;
     height: 4rem;
 
+    @media #{$media-mobile} {
+      justify-content: space-between;
+      width: 100%;
+      gap: 0.25rem;
+      height: auto;
+    }
+
     a {
       color: inherit;
 
@@ -153,6 +199,10 @@ import TextWriter from "../components/misc/TextWriter.vue";
         color: $color-bg-add-2;
       }
     }
+  }
+
+  &__copyright-text {
+    //
   }
 }
 </style>

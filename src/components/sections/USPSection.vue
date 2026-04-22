@@ -154,10 +154,14 @@ const classes = computed(() => ({
 
   &__fixed-container {
     height: 100vh;
-    padding: 0 calc(50vw / 2) 0 200px;
+    padding: 0 calc(50vw / 2) 0 10rem;
     width: max-content;
     display: flex;
     align-items: center;
+
+    @media #{$media-mobile} {
+      padding: 0 calc(50vw / 2) 0 4rem;
+    }
   }
 
   &__content {
@@ -166,6 +170,10 @@ const classes = computed(() => ({
     letter-spacing: -2%;
     font-size: 10rem;
     line-height: 1;
+
+    @media #{$media-mobile} {
+      font-size: 5.5rem;
+    }
   }
 
   &__text-container {

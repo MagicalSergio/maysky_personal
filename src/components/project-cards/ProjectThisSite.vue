@@ -33,6 +33,12 @@ import TextWriter from "../misc/TextWriter.vue";
     text-align: center;
     width: 100%;
     color: $color-font-base;
+
+    @media #{$media-mobile} {
+      transform: scale(0.2);
+      font-size: 8rem;
+      width: fit-content;
+    }
   }
 }
 </style>
@@ -41,6 +47,10 @@ import TextWriter from "../misc/TextWriter.vue";
 .project-this-site {
   .terminal-wrapper__content {
     background: $color-bg-base;
+
+    @media #{$media-mobile} {
+      width: auto;
+    }
   }
 }
 </style>

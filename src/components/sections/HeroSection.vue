@@ -55,11 +55,11 @@ onUnmounted(() => {
     display: flex;
     text-transform: uppercase;
     line-height: 1;
-    font-size: 50px;
+    font-size: 2.5rem;
     font-weight: 700;
     color: #b4b4b4;
-    margin-top: -25px;
-    padding-left: 9px;
+    margin-top: -1.25rem;
+    padding-left: 0.15rem;
 
     span {
       flex-basis: 0;
@@ -69,11 +69,15 @@ onUnmounted(() => {
   }
 
   h1 {
-    font-size: 260px;
+    font-size: 13rem;
     text-transform: uppercase;
     line-height: 1;
     font-weight: 700;
     color: $color-font-accent;
+
+    @media #{$media-mobile} {
+      font-size: 8rem;
+    }
   }
 }
 </style>

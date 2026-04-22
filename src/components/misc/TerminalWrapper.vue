@@ -115,6 +115,10 @@ const props = defineProps({
     flex-grow: 1;
     width: 100%;
     background: radial-gradient(ellipse 100% 100% at center, rgba(#1f1f1f, 1) 0%, rgba(#000000, 1) 100%);
+
+    @media #{$media-mobile} {
+      padding: 0 2rem;
+    }
   }
 }
 </style>

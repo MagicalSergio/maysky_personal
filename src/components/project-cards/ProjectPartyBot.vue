@@ -68,6 +68,10 @@ onUnmounted(() => partyBotObserver?.disconnect());
     left: 0;
     width: 100%;
 
+    @media #{$media-mobile} {
+      // height: 100%;
+    }
+
     svg {
       & > g {
         & > g {

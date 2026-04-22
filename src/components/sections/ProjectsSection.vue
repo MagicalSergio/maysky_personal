@@ -147,6 +147,12 @@ onUnmounted(() => {
     align-items: center;
     background: $color-bg-add-1;
 
+    @media #{$media-mobile} {
+      text-indent: 0;
+      height: auto;
+      padding: 6rem 0;
+    }
+
     :deep(.l) {
       color: $color-font-accent-2;
     }

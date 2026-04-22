@@ -9,7 +9,7 @@ const props = defineProps({
   },
 });
 
-const progress = ref(0.5);
+const progress = ref(0);
 
 const rail = useTemplateRef("rail");
 const standardCell = useTemplateRef("standard-cell");
@@ -20,8 +20,9 @@ const cells = ref([]);
 const heightPX = computed(() => `${props.height}px`);
 
 const computeCells = () => {
-  const cellHeight = standardCell.value.offsetHeight;
-  const cellsAmount = Math.ceil(props.height / (cellHeight + cellHeight * 0.6));
+  const cellHeight = standardCell.value.getBoundingClientRect().height;
+  const gap = parseFloat(getComputedStyle(rail.value).rowGap);
+  const cellsAmount = Math.ceil((props.height + gap) / (cellHeight + gap));
   cells.value = Array.from({ length: cellsAmount }).map(() => false);
 };
 
@@ -31,11 +32,9 @@ const updateCellsByProgress = () => {
 
 let scrollHandler = null;
 const initScrollHandler = () => {
-  scrollHandler = (ev) => {
-    const offset = window.innerHeight / 2;
-    const length = rail.value.getBoundingClientRect().height;
-    const start = ev.actualScroll + rail.value.getBoundingClientRect().top - offset;
-    progress.value = (ev.actualScroll - start) / length;
+  scrollHandler = () => {
+    const { top, height } = rail.value.getBoundingClientRect();
+    progress.value = (window.innerHeight / 2 - top) / height;
   };
   getScroll().on("scroll", scrollHandler);
 };
@@ -79,7 +78,7 @@ onUnmounted(() => {
     width: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.33rem;
   }
 
   &__cell {

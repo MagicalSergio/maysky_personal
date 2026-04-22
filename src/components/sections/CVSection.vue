@@ -96,6 +96,8 @@ const calculateHeight = () => {
 
     return acc + cv.getBoundingClientRect().height;
   }, 0);
+
+  console.log("itemsContainerHeight.value: ", itemsContainerHeight.value);
 };
 
 const adjustLastDateMargin = () => {
@@ -230,6 +232,10 @@ onUnmounted(() => {
     background: $color-bg-add-1;
     font-size: 1.625rem;
 
+    @media #{$media-mobile} {
+      padding: 4rem 0 4rem 1rem;
+    }
+
     :deep(span) {
       color: $color-font-accent;
     }
@@ -237,6 +243,10 @@ onUnmounted(() => {
 
   &__item {
     font-size: 1.625rem;
+
+    @media #{$media-mobile} {
+      padding-left: 2rem;
+    }
 
     &:nth-child(2n) {
       background: $color-bg-add-1;
@@ -266,6 +276,11 @@ onUnmounted(() => {
     column-gap: 2rem;
     align-items: start;
     justify-items: start;
+
+    @media #{$media-mobile} {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__timeline-container {
@@ -276,6 +291,10 @@ onUnmounted(() => {
     position: absolute;
     top: 0;
     left: 5rem;
+
+    @media #{$media-mobile} {
+      left: 1rem;
+    }
   }
 
   &__item-date {
@@ -286,6 +305,11 @@ onUnmounted(() => {
     font-size: 0.8rem;
     position: sticky;
     top: calc(50vh);
+
+    @media #{$media-mobile} {
+      position: static;
+      margin: 0 0 1rem 0 !important;
+    }
   }
 
   &__item-text {

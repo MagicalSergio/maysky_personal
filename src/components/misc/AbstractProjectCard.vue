@@ -127,6 +127,11 @@ onUnmounted(() => observer?.disconnect());
     gap: 2rem;
     width: 100%;
     height: 80%;
+
+    @media #{$media-mobile} {
+      flex-direction: column-reverse;
+      height: 80%;
+    }
   }
 
   &__media {
@@ -134,6 +139,12 @@ onUnmounted(() => observer?.disconnect());
     flex-shrink: 0;
     flex-grow: 1;
     flex-basis: 0;
+
+    @media #{$media-mobile} {
+      width: 100%;
+      height: auto;
+      display: none; // because f**k mobile
+    }
   }
 
   &__info {
