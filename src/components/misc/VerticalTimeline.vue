@@ -1,14 +1,15 @@
 <script setup>
-import { ref, computed, onMounted, useTemplateRef, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted, useTemplateRef, watch } from "vue";
 import { getScroll } from "../../scripts/scroll";
 
-const progress = ref(0.5);
 const props = defineProps({
   height: {
     type: Number,
     required: true,
   },
 });
+
+const progress = ref(0.5);
 
 const rail = useTemplateRef("rail");
 const standardCell = useTemplateRef("standard-cell");
@@ -30,14 +31,16 @@ const updateCellsByProgress = () => {
   );
 };
 
+let scrollHandler = null;
 const initScrollHandler = () => {
-  getScroll().on("scroll", (ev) => {
+  scrollHandler = (ev) => {
     const offset = window.innerHeight / 2;
     const length = rail.value.getBoundingClientRect().height;
     const start =
       ev.actualScroll + rail.value.getBoundingClientRect().top - offset;
     progress.value = (ev.actualScroll - start) / length;
-  });
+  };
+  getScroll().on("scroll", scrollHandler);
 };
 
 watch(() => progress.value, updateCellsByProgress);
@@ -48,6 +51,10 @@ onMounted(() => {
   updateCellsByProgress();
   initScrollHandler();
   isMountCompleted.value = true;
+});
+
+onUnmounted(() => {
+  if (scrollHandler) getScroll().off("scroll", scrollHandler);
 });
 </script>
 

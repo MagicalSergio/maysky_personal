@@ -1,28 +1,17 @@
 <script setup>
 import PowerIcon from "../../assets/icons/power-icon.svg?component";
 import IdenticIcon from "../../assets/icons/identic-icon.svg?component";
-import { computed, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import { getRandomInt } from "../../util/random";
 
-const state = ref("disabled"); // loading | enabled
+const state = ref("disabled"); // disabled | loading | enabled
+
+/**
+ * Button handling
+ */
 const powerIconRef = ref(null);
 let spinAnimation = null;
 let rampInterval = null;
-
-const handleButton = async () => {
-  if (state.value === "loading") return;
-
-  if (state.value === "enabled") {
-    state.value = "disabled";
-    return;
-  }
-
-  state.value = "loading";
-  startSpin();
-  await connect();
-  await stopSpin();
-  state.value = "enabled";
-};
 
 const connect = async () => {
   return new Promise((resolve) => {
@@ -46,11 +35,9 @@ const startSpin = () => {
   });
   spinAnimation.playbackRate = 0;
 
-  let rate = 0;
   rampInterval = setInterval(() => {
-    rate = Math.min(1, rate + 0.1);
-    spinAnimation.playbackRate = rate;
-    if (rate >= 1) clearInterval(rampInterval);
+    spinAnimation.playbackRate = Math.min(1, spinAnimation.playbackRate + 0.1);
+    if (spinAnimation.playbackRate >= 1) clearInterval(rampInterval);
   }, 40);
 };
 
@@ -58,38 +45,73 @@ const stopSpin = () => {
   clearInterval(rampInterval);
   if (!spinAnimation) return Promise.resolve();
 
-  const anim = spinAnimation;
   return new Promise((resolve) => {
-    let rate = anim.playbackRate;
     rampInterval = setInterval(() => {
-      rate = Math.max(0, rate - 0.1);
-      anim.playbackRate = rate;
-      if (rate > 0) return;
+      spinAnimation.playbackRate = Math.max(0, spinAnimation.playbackRate - 0.1);
+      if (spinAnimation.playbackRate > 0) return;
 
       clearInterval(rampInterval);
-      const currentAngle = ((anim.currentTime % 800) / 800) * 360;
+      const currentAngle = ((spinAnimation.currentTime % 800) / 800) * 360;
       const el = getEl();
-      anim.cancel();
+      spinAnimation.cancel();
       spinAnimation = null;
 
       if (!el || currentAngle < 1) return resolve();
 
       const targetAngle = currentAngle >= 180 ? 360 : 0;
       el.style.transform = `rotate(${currentAngle}deg)`;
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() => {
-          el.style.transition = "transform 0.25s ease-out";
-          el.style.transform = `rotate(${targetAngle}deg)`;
-          setTimeout(() => {
-            el.style.transform = "";
-            el.style.transition = "";
-            resolve();
-          }, 270);
-        }),
-      );
+      requestAnimationFrame(() => {
+        el.style.transition = "transform 0.25s ease-out";
+        el.style.transform = `rotate(${targetAngle}deg)`;
+        setTimeout(() => {
+          el.style.transform = "";
+          el.style.transition = "";
+          resolve();
+        }, 270);
+      });
     }, 40);
   });
 };
+
+const enable = async () => {
+  state.value = "loading";
+  startSpin();
+  await connect();
+  await stopSpin();
+  state.value = "enabled";
+};
+
+const handleButton = async () => {
+  if (state.value === "loading") return;
+
+  if (state.value === "enabled") {
+    state.value = "disabled";
+    return;
+  }
+
+  enable();
+};
+
+/**
+ * Observer
+ */
+const root = useTemplateRef("root");
+let observer = null;
+const createObserver = () => {
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        enable();
+        observer.unobserve(root.value);
+      }
+    },
+    { threshold: 0.25 },
+  );
+
+  observer.observe(root.value);
+};
+onMounted(createObserver);
+onUnmounted(() => observer?.disconnect());
 
 const classes = computed(() => ({
   [`maysky-vpn_${state.value}`]: state.value,
@@ -97,13 +119,11 @@ const classes = computed(() => ({
 </script>
 
 <template>
-  <div class="maysky-vpn" :class="classes">
+  <div ref="root" class="maysky-vpn" :class="classes">
     <div class="maysky-vpn__top">
       <button class="maysky-vpn__button" @click="handleButton">
         <PowerIcon ref="powerIconRef" class="maysky-vpn__power-icon" />
       </button>
-
-      
     </div>
 
     <div class="maysky-vpn__bottom">
@@ -114,8 +134,6 @@ const classes = computed(() => ({
 
         <div class="maysky-vpn__title">Maysky VPN</div>
       </div>
-
-      <button class="maysky-vpn__ping-button">Test ping</button>
     </div>
   </div>
 </template>
@@ -176,7 +194,7 @@ const classes = computed(() => ({
       border-radius: 50%;
       opacity: 0;
       filter: blur(100px);
-      transition: all 1s ease;
+      transition: all 1s ease-in-out;
       z-index: -1;
       transform: scale(0);
       will-change: transform, opacity;
@@ -186,7 +204,7 @@ const classes = computed(() => ({
   &__power-icon {
     width: 3.2rem;
     height: 3.2rem;
-    color: #31b380;
+    color: #7c3131;
     transform-origin: center;
   }
 
@@ -225,19 +243,6 @@ const classes = computed(() => ({
     font-size: 1rem;
   }
 
-  &__ping-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 1px solid rgba(#2f6d4a, 0.5);
-    border-radius: 0.8rem;
-    color: #ffffff;
-    font-size: 1rem;
-    width: 17rem;
-    height: 2.6rem;
-  }
-
   &_enabled {
     #{$root}__button {
       background: rgba(#51d374, 0.14);
@@ -246,6 +251,10 @@ const classes = computed(() => ({
         opacity: 1;
         transform: translate(-50%, -50%) scale(1.75);
       }
+    }
+
+    #{$root}__power-icon {
+      color: #31b380;
     }
   }
 }

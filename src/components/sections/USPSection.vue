@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, useTemplateRef, ref, computed } from "vue";
+import { onMounted, onUnmounted, useTemplateRef, ref, computed } from "vue";
 import { cubicBezier } from "../../util/cubicBezier";
 import { getScroll } from "../../scripts/scroll";
 
@@ -85,6 +85,10 @@ onMounted(() => {
   calculatePadding();
   getScroll().on("scroll", onScroll);
   mounted.value = true;
+});
+
+onUnmounted(() => {
+  getScroll().off("scroll", onScroll);
 });
 
 const classes = computed(() => ({

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, watch, onMounted } from "vue";
+import { ref, defineProps, watch, onMounted, onUnmounted } from "vue";
 import { getRandomInt } from "../../util/random";
 
 const props = defineProps({
@@ -54,6 +54,7 @@ const scramble = () => {
   });
 };
 
+let randomScrambleInterval = null;
 const initRandomScrambling = () => {
   const initial = props.text;
 
@@ -72,7 +73,7 @@ const initRandomScrambling = () => {
 
   iterate();
 
-  setInterval(() => {
+  randomScrambleInterval = setInterval(() => {
     iterate();
   }, 2000);
 };
@@ -87,6 +88,11 @@ watch(
 
 onMounted(() => {
   if (props.randomScramble) initRandomScrambling();
+});
+
+onUnmounted(() => {
+  clearInterval(randomScrambleInterval);
+  intervals.value.forEach(clearInterval);
 });
 </script>
 

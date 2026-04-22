@@ -101,7 +101,7 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
     renderer.render(scene, camera);
   };
 
-  lenis.on("scroll", (ev) => {
+  const scrollHandler = (ev) => {
     const localScroll = Math.max(0, ev.scroll - canvasTop);
 
     camera.position.y = Math.min(BASE_Y + localScroll * SCROLL_Y, 0.5);
@@ -115,14 +115,15 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
     const progress = (rotX - BASE_ROT_X) / (-Math.PI / 2 - BASE_ROT_X);
     currentSpeed = SPEED * (1 - THREE.MathUtils.clamp(progress, 0, 1));
     camera.rotation.set(rotX, localScroll * SCROLL_ROT_Y, localScroll * SCROLL_ROT_Z);
-  });
+  };
+  lenis.on("scroll", scrollHandler);
 
-  return animate;
+  return { animate, scrollHandler };
 };
 
 onMounted(() => {
   const { scene, camera, renderer, tiles } = initScene(canvas.value);
-  const animate = initScrollHandler(camera, tiles, canvas.value);
+  const { animate, scrollHandler } = initScrollHandler(camera, tiles, canvas.value);
 
   if (props.immediate) renderer.setAnimationLoop(animate(renderer, scene));
 
@@ -134,6 +135,7 @@ onMounted(() => {
   onUnmounted(() => {
     visibilityObserver.disconnect();
     renderer.setAnimationLoop(null);
+    getScroll().off("scroll", scrollHandler);
   });
 });
 

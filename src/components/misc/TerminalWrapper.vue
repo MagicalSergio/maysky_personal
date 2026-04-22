@@ -47,7 +47,7 @@ const props = defineProps({
 .terminal-wrapper {
   $root: &;
 
-  border-radius: 1rem;
+  border-radius: 0.25rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
