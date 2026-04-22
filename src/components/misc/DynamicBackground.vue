@@ -45,12 +45,7 @@ const createGridTile = () => {
   }
 
   for (let l = 0; l <= TILE_SIZE; l = Math.round((l + LINE_STEP) * 1000) / 1000) {
-    tile.add(
-      createGridLine(
-        new THREE.Vector3(GRID_RANGE[0], 0.25, l),
-        new THREE.Vector3(GRID_RANGE[1], 0.25, l),
-      ),
-    );
+    tile.add(createGridLine(new THREE.Vector3(GRID_RANGE[0], 0.25, l), new THREE.Vector3(GRID_RANGE[1], 0.25, l)));
   }
 
   return tile;
@@ -85,6 +80,7 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
   const lenis = getScroll();
   const canvasTop = canvasEl.getBoundingClientRect().top + lenis.scroll;
   let currentSpeed = SPEED;
+  let firstRenderDone = false;
 
   const animate = (renderer, scene) => {
     tiles.forEach((tile) => {
@@ -99,6 +95,11 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
     });
 
     renderer.render(scene, camera);
+
+    if (!firstRenderDone) {
+      firstRenderDone = true;
+      window.dispatchEvent(new CustomEvent('app:scene-ready'));
+    }
   };
 
   const scrollHandler = (ev) => {
@@ -107,11 +108,7 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
     camera.position.y = Math.min(BASE_Y + localScroll * SCROLL_Y, 0.5);
     camera.position.z = localScroll * SCROLL_Z;
 
-    const rotX = THREE.MathUtils.clamp(
-      BASE_ROT_X + localScroll * SCROLL_ROT_X,
-      -Math.PI / 2,
-      Math.PI / 2,
-    );
+    const rotX = THREE.MathUtils.clamp(BASE_ROT_X + localScroll * SCROLL_ROT_X, -Math.PI / 2, Math.PI / 2);
     const progress = (rotX - BASE_ROT_X) / (-Math.PI / 2 - BASE_ROT_X);
     currentSpeed = SPEED * (1 - THREE.MathUtils.clamp(progress, 0, 1));
     camera.rotation.set(rotX, localScroll * SCROLL_ROT_Y, localScroll * SCROLL_ROT_Z);
@@ -175,9 +172,12 @@ const classes = computed(() => ({
   }
 
   &_footer {
+    #{$root}__canvas {
+    }
+
     #{$root}__gradient {
       background:
-        linear-gradient(to bottom, $color-bg-base 0%, $color-bg-base 50%, transparent 100%),
+        linear-gradient(to bottom, $color-bg-base 0%, $color-bg-base 35%, transparent 100%),
         linear-gradient(to bottom, transparent 0%, transparent 70%, $color-bg-base 90%);
     }
   }

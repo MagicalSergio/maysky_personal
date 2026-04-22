@@ -21,8 +21,7 @@ const updateState = () => {
   const containerHeight = fixedContainer.value.getBoundingClientRect().height;
 
   if (top > 0) return (state.value = "pending");
-  if (Math.abs(top) + containerHeight >= rootHeight)
-    return (state.value = "scrolled");
+  if (Math.abs(top) + containerHeight >= rootHeight) return (state.value = "scrolled");
   return (state.value = "scrolling");
 };
 
@@ -112,25 +111,14 @@ const classes = computed(() => ({
         <span class="usp-section__input">></span>
         <span class="usp-section__text-container">
           <span class="usp-section__fake-text"
-            ><span
-              v-for="(c, i) in text"
-              :key="`${c}-${i}`"
-              ref="char"
-              class="usp-section__char"
-            >
+            ><span v-for="(c, i) in text" :key="`${c}-${i}`" ref="char" class="usp-section__char">
               <span>{{ c }}</span>
             </span>
           </span>
           <span class="usp-section__text"
-            ><span
-              v-for="(c, i) in computedText"
-              :key="`${c}-${i}`"
-              class="usp-section__char"
+            ><span v-for="(c, i) in computedText" :key="`${c}-${i}`" class="usp-section__char"
               ><span>{{ c }}</span
-              ><span
-                class="usp-section__char-underline"
-                :style="{ width: `${calculateUnderlineWidth(i)}px` }"
-              ></span></span
+              ><span class="usp-section__char-underline" :style="{ width: `${calculateUnderlineWidth(i)}px` }"></span></span
             ><span class="usp-section__cursor"></span>
           </span>
         </span>

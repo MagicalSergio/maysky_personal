@@ -14,6 +14,10 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  randomScrambleFreq: {
+    type: Number,
+    default: 2000,
+  },
   randomScramble: {
     type: Boolean,
     default: true,
@@ -75,7 +79,7 @@ const initRandomScrambling = () => {
 
   randomScrambleInterval = setInterval(() => {
     iterate();
-  }, 2000);
+  }, props.randomScrambleFreq);
 };
 
 watch(

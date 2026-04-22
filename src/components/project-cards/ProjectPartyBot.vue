@@ -7,11 +7,7 @@ const DATA = {
   href: "https://github.com/MagicalSergio/super-party-bot",
   title: "party-bot",
   subtitle: "an AI-chat assistant",
-  features: [
-    "multiple switchable AI personalities",
-    "context saving and updating",
-    "proxied by shadowsocks (_outdated)",
-  ],
+  features: ["multiple switchable AI personalities", "context saving and updating", "proxied by shadowsocks (_outdated)"],
   stack: ["node", "ts", "sqlite", "typeorm", "shadowsocks", "grok"],
 };
 

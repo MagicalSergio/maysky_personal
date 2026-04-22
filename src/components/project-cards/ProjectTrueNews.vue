@@ -25,6 +25,6 @@ const DATA = {
 
 <style lang="scss">
 .project-true-news {
-    //
+  //
 }
 </style>

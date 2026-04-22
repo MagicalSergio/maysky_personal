@@ -26,9 +26,7 @@ const computeCells = () => {
 };
 
 const updateCellsByProgress = () => {
-  cells.value = cells.value.map(
-    (_, i) => i < Math.ceil(cells.value.length * progress.value),
-  );
+  cells.value = cells.value.map((_, i) => i < Math.ceil(cells.value.length * progress.value));
 };
 
 let scrollHandler = null;
@@ -36,8 +34,7 @@ const initScrollHandler = () => {
   scrollHandler = (ev) => {
     const offset = window.innerHeight / 2;
     const length = rail.value.getBoundingClientRect().height;
-    const start =
-      ev.actualScroll + rail.value.getBoundingClientRect().top - offset;
+    const start = ev.actualScroll + rail.value.getBoundingClientRect().top - offset;
     progress.value = (ev.actualScroll - start) / length;
   };
   getScroll().on("scroll", scrollHandler);
@@ -61,11 +58,7 @@ onUnmounted(() => {
 <template>
   <div class="vertical-timeline">
     <div ref="rail" class="vertical-timeline__rail">
-      <div
-        v-if="!isMountCompleted"
-        ref="standard-cell"
-        class="vertical-timeline__cell"
-      />
+      <div v-if="!isMountCompleted" ref="standard-cell" class="vertical-timeline__cell" />
 
       <template v-else>
         <div

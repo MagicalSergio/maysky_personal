@@ -103,14 +103,8 @@ const adjustLastDateMargin = () => {
   const dateItem = cvItem.querySelector(".cv-section__item-date");
   const parent = dateItem.parentElement;
   const parentStyle = getComputedStyle(parent);
-  const innerHeight =
-    parent.clientHeight -
-    parseFloat(parentStyle.paddingTop) -
-    parseFloat(parentStyle.paddingBottom);
-  dateItem.style.setProperty(
-    "margin-bottom",
-    `${innerHeight / 2 - dateItem.offsetHeight / 2}px`,
-  );
+  const innerHeight = parent.clientHeight - parseFloat(parentStyle.paddingTop) - parseFloat(parentStyle.paddingBottom);
+  dateItem.style.setProperty("margin-bottom", `${innerHeight / 2 - dateItem.offsetHeight / 2}px`);
 };
 
 let observer = null;
@@ -147,25 +141,15 @@ onUnmounted(() => {
 <template>
   <section class="cv-section">
     <div class="cv-section__head">
-      <TextWriter
-        :text="'6 years: from brewing coffee <br /> to <span>versatile engineer</span>'"
-      />
+      <TextWriter :text="'6 years: from brewing coffee <br /> to <span>versatile engineer</span>'" />
     </div>
 
     <div class="cv-section__items">
       <BaseContainer class="cv-section__timeline-container">
-        <CVTimeline
-          :height="itemsContainerHeight"
-          class="cv-section__timeline"
-        />
+        <CVTimeline :height="itemsContainerHeight" class="cv-section__timeline" />
       </BaseContainer>
 
-      <div
-        ref="cv-items"
-        v-for="(cv, i) in data.items"
-        :key="cv.name"
-        class="cv-section__item"
-      >
+      <div ref="cv-items" v-for="(cv, i) in data.items" :key="cv.name" class="cv-section__item">
         <BaseContainer>
           <div class="cv-section__item-content">
             <div class="cv-section__item-date">
@@ -173,10 +157,7 @@ onUnmounted(() => {
                 {{ cv.time }}
               </template>
               <template v-else>
-                <ScrambleText
-                  :text="cv.time.replaceAll(' ', '&nbsp;')"
-                  :random-scramble-count="2"
-                />
+                <ScrambleText :text="cv.time.replaceAll(' ', '&nbsp;')" :random-scramble-count="2" />
               </template>
             </div>
 
@@ -206,10 +187,7 @@ onUnmounted(() => {
               </template>
               <template v-else>
                 <div class="cv-section__item-text">
-                  <ScrambleText
-                    :text="cv.description"
-                    :random-scramble-count="200"
-                  />
+                  <ScrambleText :text="cv.description" :random-scramble-count="200" />
                 </div>
               </template>
 

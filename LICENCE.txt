@@ -1,0 +1,69 @@
+Copyright (c) Sergei "Maysky" Grechishkin 2026. All rights reserved.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+РУССКИЙ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+УСЛОВИЯ ИСПОЛЬЗОВАНИЯ — ЛИЦЕНЗИЯ ТОЛЬКО ДЛЯ ПРОСМОТРА
+
+Данный исходный код публикуется исключительно в ознакомительных
+и образовательных целях.
+
+Вам НЕ разрешается:
+  - Копировать или воспроизводить данный код полностью или частично
+  - Использовать данный код или его части в личных, коммерческих
+    или клиентских проектах
+  - Изменять, адаптировать или создавать производные работы на
+    основе данного кода
+  - Распространять данный код в любой форме, с изменениями или без
+  - Сублицензировать, продавать или передавать какие-либо права
+    на данный код
+
+Вам разрешается:
+  - Просматривать и изучать код в образовательных и ознакомительных целях
+  - Использовать общие концепции и подходы, описанные здесь,
+    при условии их самостоятельной и оригинальной реализации
+
+Данный код является оригинальной творческой и технической работой.
+Несанкционированное использование является нарушением авторских прав
+и может повлечь юридическую ответственность в соответствии с
+применимым законодательством об интеллектуальной собственности.
+
+По вопросам лицензирования или получения разрешений
+обращайтесь непосредственно к автору.
+
+ДАННЫЙ КОД ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
+АВТОР НЕ НЕСЁТ ОТВЕТСТВЕННОСТИ ЗА КАКИЕ-ЛИБО ПРЕТЕНЗИИ, УБЫТКИ
+ИЛИ ИНУЮ ОТВЕТСТВЕННОСТЬ, ВОЗНИКАЮЩУЮ В РЕЗУЛЬТАТЕ
+НЕСАНКЦИОНИРОВАННОГО ИСПОЛЬЗОВАНИЯ ДАННОГО КОДА.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ENGLISH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TERMS OF USE — VIEW-ONLY LICENSE
+
+This source code is made available for viewing and educational purposes only.
+
+You are NOT permitted to:
+  - Copy, reproduce, or duplicate this code in whole or in part
+  - Use this code or any portion of it in personal, commercial,
+    or client projects
+  - Modify, adapt, or create derivative works based on this code
+  - Redistribute this code in any form, with or without modification
+  - Sublicense, sell, or transfer any rights to this code
+
+You ARE permitted to:
+  - View and read the code for educational and inspirational purposes
+  - Reference the general concepts and techniques described herein,
+    provided you implement them independently in your own original work
+
+This code represents original creative and technical work.
+Unauthorized use constitutes copyright infringement and may result
+in legal action under applicable intellectual property laws.
+
+For licensing inquiries or permission requests, please contact the author directly.
+
+THIS CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+THE AUTHOR SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY
+ARISING FROM UNAUTHORIZED USE OF THIS CODE.

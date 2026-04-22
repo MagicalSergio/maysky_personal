@@ -6,7 +6,7 @@ import TextWriter from "../misc/TextWriter.vue";
 import ProjectPartyBot from "../project-cards/ProjectPartyBot.vue";
 import ProjectTrueNews from "../project-cards/ProjectTrueNews.vue";
 import ProjectMayskyVPN from "../project-cards/ProjectMayskyVPN.vue";
-import ProjectThisSite from '../project-cards/ProjectThisSite.vue';
+import ProjectThisSite from "../project-cards/ProjectThisSite.vue";
 
 const scrollViewport = useTemplateRef("cards-scroll-viewport");
 const scrollRail = useTemplateRef("cards-scroll-rail");
@@ -30,7 +30,7 @@ const initScrollListener = () => {
 };
 
 const computeExpandScale = () => {
-  const terminalEl = thisSiteCard.value?.$el?.querySelector('.terminal-wrapper');
+  const terminalEl = thisSiteCard.value?.$el?.querySelector(".terminal-wrapper");
   if (!terminalEl) return;
   const { width: tw, height: th } = terminalEl.getBoundingClientRect();
   const vw = window.innerWidth;
@@ -85,27 +85,16 @@ watch(
   () => progress.value,
   (p) => {
     const pbOut = easeInOut(remap(p, 0, 0.3));
-    cardsStyles.value.partyBot = toStyle(
-      lerpKf(keyframes.partyBot.active, keyframes.partyBot.exit, pbOut),
-      p < 0.3 ? "2" : "1",
-    );
+    cardsStyles.value.partyBot = toStyle(lerpKf(keyframes.partyBot.active, keyframes.partyBot.exit, pbOut), p < 0.3 ? "2" : "1");
 
     const tnIn = easeInOut(remap(p, 0.1, 0.3));
     const tnOut = easeInOut(remap(p, 0.3, 0.6));
-    const tn = lerpKf(
-      lerpKf(keyframes.trueNews.enter, keyframes.trueNews.active, tnIn),
-      keyframes.trueNews.exit,
-      tnOut,
-    );
+    const tn = lerpKf(lerpKf(keyframes.trueNews.enter, keyframes.trueNews.active, tnIn), keyframes.trueNews.exit, tnOut);
     cardsStyles.value.trueNews = toStyle(tn, p < 0.3 ? "4" : "1");
 
     const vpnIn = easeInOut(remap(p, 0.4, 0.6));
     const vpnOut = easeInOut(remap(p, 0.6, 0.9));
-    const vpn = lerpKf(
-      lerpKf(keyframes.vpn.enter, keyframes.vpn.active, vpnIn),
-      keyframes.vpn.exit,
-      vpnOut,
-    );
+    const vpn = lerpKf(lerpKf(keyframes.vpn.enter, keyframes.vpn.active, vpnIn), keyframes.vpn.exit, vpnOut);
     cardsStyles.value.vpn = toStyle(vpn, p < 0.4 ? "3" : "1");
 
     const tsIn = easeInOut(remap(p, 0.72, 0.88));
@@ -130,11 +119,7 @@ onUnmounted(() => {
   <section class="projects-section">
     <div class="projects-section__head">
       <BaseContainer>
-        <TextWriter
-          text='i build purposeful tools for myself and my <span class="l">loved</span> ones'
-          :duration="4000"
-          keep-cursor
-        />
+        <TextWriter text='i build purposeful tools for myself and my <span class="l">loved</span> ones' :duration="4000" keep-cursor />
       </BaseContainer>
     </div>
 
@@ -151,6 +136,8 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .projects-section {
+  contain: paint;
+
   &__head {
     font-size: 4rem;
     text-indent: calc(50% + 1rem);
