@@ -30,22 +30,21 @@ const SCROLL_ROT_Z = 0;
 
 const canvas = useTemplateRef("canvas");
 
-const createGridLine = (from, to) => {
+const createGridLine = (from, to, material) => {
   const path = new THREE.LineCurve3(from, to);
   const geometry = new THREE.TubeGeometry(path, 1, LINE_WIDTH, 8, false);
-  const material = new THREE.MeshBasicMaterial({ color: "#666666" });
   return new THREE.Mesh(geometry, material);
 };
 
-const createGridTile = () => {
+const createGridTile = (material) => {
   const tile = new THREE.Group();
 
   for (let l = GRID_RANGE[0]; l <= GRID_RANGE[1]; l = Math.round((l + LINE_STEP) * 1000) / 1000) {
-    tile.add(createGridLine(new THREE.Vector3(l, 0.25, 0), new THREE.Vector3(l, 0.25, TILE_SIZE)));
+    tile.add(createGridLine(new THREE.Vector3(l, 0.25, 0), new THREE.Vector3(l, 0.25, TILE_SIZE), material));
   }
 
   for (let l = 0; l <= TILE_SIZE; l = Math.round((l + LINE_STEP) * 1000) / 1000) {
-    tile.add(createGridLine(new THREE.Vector3(GRID_RANGE[0], 0.25, l), new THREE.Vector3(GRID_RANGE[1], 0.25, l)));
+    tile.add(createGridLine(new THREE.Vector3(GRID_RANGE[0], 0.25, l), new THREE.Vector3(GRID_RANGE[1], 0.25, l), material));
   }
 
   return tile;
@@ -65,15 +64,16 @@ const initScene = (el) => {
   renderer.setSize(width, height);
   el.appendChild(renderer.domElement);
 
+  const lineMaterial = new THREE.MeshBasicMaterial({ color: "#666666" });
   const tiles = Array.from({ length: 4 }, (_, i) => {
-    const tile = createGridTile();
+    const tile = createGridTile(lineMaterial);
     tile.scale.z = -1;
     tile.position.z = camera.position.z + 2 * TILE_SIZE - i * TILE_SIZE;
     scene.add(tile);
     return tile;
   });
 
-  return { scene, camera, renderer, tiles };
+  return { scene, camera, renderer, tiles, lineMaterial };
 };
 
 const initScrollHandler = (camera, tiles, canvasEl) => {
@@ -83,16 +83,16 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
   let firstRenderDone = false;
 
   const animate = (renderer, scene) => {
-    tiles.forEach((tile) => {
+    let minZ = Infinity;
+    for (const tile of tiles) {
       tile.position.z += currentSpeed;
-    });
-
-    const minZ = Math.min(...tiles.map((t) => t.position.z));
-    tiles.forEach((tile) => {
+      if (tile.position.z < minZ) minZ = tile.position.z;
+    }
+    for (const tile of tiles) {
       if (tile.position.z > camera.position.z + 2 * TILE_SIZE) {
         tile.position.z = minZ - TILE_SIZE;
       }
-    });
+    }
 
     renderer.render(scene, camera);
 
@@ -115,12 +115,12 @@ const initScrollHandler = (camera, tiles, canvasEl) => {
   };
   lenis.on("scroll", scrollHandler);
 
-  return { animate, scrollHandler };
+  return { animate, scrollHandler, lenis };
 };
 
 onMounted(() => {
-  const { scene, camera, renderer, tiles } = initScene(canvas.value);
-  const { animate, scrollHandler } = initScrollHandler(camera, tiles, canvas.value);
+  const { scene, camera, renderer, tiles, lineMaterial } = initScene(canvas.value);
+  const { animate, scrollHandler, lenis } = initScrollHandler(camera, tiles, canvas.value);
 
   if (props.immediate) renderer.setAnimationLoop(animate(renderer, scene));
 
@@ -132,7 +132,10 @@ onMounted(() => {
   onUnmounted(() => {
     visibilityObserver.disconnect();
     renderer.setAnimationLoop(null);
-    getScroll().off("scroll", scrollHandler);
+    lenis.off("scroll", scrollHandler);
+    scene.traverse((obj) => { if (obj.geometry) obj.geometry.dispose(); });
+    lineMaterial.dispose();
+    renderer.dispose();
   });
 });
 

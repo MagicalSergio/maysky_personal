@@ -15,7 +15,7 @@ import TextWriter from "../components/misc/TextWriter.vue";
 
     <div class="footer__main">
       <div class="footer__main-line">
-        <TextWriter text='rdy to build smthng <span class="p">great</span>?' />
+        <TextWriter text='rdy to build smthng <span class="p">great</span>?' :speed="20" />
       </div>
 
       <div class="footer__main-line">
@@ -103,6 +103,11 @@ import TextWriter from "../components/misc/TextWriter.vue";
 
     &:hover {
       opacity: 1;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
     }
 
     .gh {

@@ -164,7 +164,7 @@ onUnmounted(() => {
             <div class="cv-section__item-info">
               <div class="cv-section__item-title">
                 <template v-if="i !== data.items.length - 1">
-                  <TextWriter :text="cv.name" :duration="500" />
+                  <TextWriter :text="cv.name" :speed="10" />
                 </template>
                 <template v-else>
                   <ScrambleText :text="cv.name" />
@@ -173,7 +173,7 @@ onUnmounted(() => {
 
               <div v-if="cv.field" class="cv-section__item-field">
                 <template v-if="i !== data.items.length - 1">
-                  <TextWriter :duration="200" :text="`# ${cv.field}`" />
+                  <TextWriter :text="`# ${cv.field}`" />
                 </template>
                 <template v-else>
                   <ScrambleText :text="`#&nbsp;${cv.field}`" />
@@ -182,7 +182,7 @@ onUnmounted(() => {
 
               <template v-if="i !== data.items.length - 1">
                 <div class="cv-section__item-text">
-                  <TextWriter :text="cv.description" :duration="2000" />
+                  <TextWriter :text="cv.description" />
                 </div>
               </template>
               <template v-else>
@@ -210,7 +210,7 @@ onUnmounted(() => {
               </div>
 
               <div v-if="cv.decoration" class="cv-section__decoration">
-                <TextWriter :text="cv.decoration" :duration="500" />
+                <TextWriter :text="cv.decoration" />
               </div>
             </div>
           </div>

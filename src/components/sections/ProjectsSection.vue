@@ -119,7 +119,7 @@ onUnmounted(() => {
   <section class="projects-section">
     <div class="projects-section__head">
       <BaseContainer>
-        <TextWriter text='i build purposeful tools for myself and my <span class="l">loved</span> ones' :duration="4000" keep-cursor />
+        <TextWriter text='i build purposeful tools for myself and my <span class="l">loved</span> ones' keep-cursor :speed="20" />
       </BaseContainer>
     </div>
 

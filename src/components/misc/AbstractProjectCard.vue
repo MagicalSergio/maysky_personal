@@ -61,7 +61,7 @@ onUnmounted(() => observer?.disconnect());
             <div class="project-card__head">
               <component :is="href ? 'a' : 'div'" :href="href" target="_blank" class="project-card__link">
                 <h2 class="project-card__title">
-                  <TextWriter :text="title" />
+                  <TextWriter :text="title" :speed="20" />
                 </h2>
 
                 <div v-if="href" class="project-card__gh-link">
@@ -72,11 +72,11 @@ onUnmounted(() => observer?.disconnect());
             </div>
 
             <div class="project-card__subtitle">
-              <TextWriter :text="subtitle" />
+              <TextWriter :text="subtitle" :speed="25" />
             </div>
 
             <ul class="project-card__features">
-              <li v-for="(f, i) in features" :key="f">\{{ i + 1 }}<TextWriter :text="f" /></li>
+              <li v-for="(f, i) in features" :key="f">\{{ i + 1 }}<TextWriter :text="f" :speed="50" /></li>
             </ul>
 
             <div ref="stack" :style="{ opacity: scrambleTrigger ? '1' : '0' }" class="project-card__stack">

@@ -8,7 +8,7 @@ import TextWriter from "../misc/TextWriter.vue";
   <div class="project-this-site">
     <BaseContainer class="project-this-site__container">
       <TerminalWrapper title="https://maysky.dev/" class="project-this-site__terminal">
-        <TextWriter class="project-this-site__title" text="https://maysky.dev/" keep-cursor />
+        <TextWriter class="project-this-site__title" text="https://maysky.dev/" keep-cursor :speed="25" />
       </TerminalWrapper>
     </BaseContainer>
   </div>

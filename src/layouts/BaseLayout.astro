@@ -20,27 +20,37 @@ const { title = "maysky", description = "Personal website" } = Astro.props;
     <meta name="author" content="maysky" />
     <title>{title}</title>
     <style is:inline>
-      html.app-loading {
+      html {
+        overflow-y: scroll;
+      }
+
+      html.app-loading body {
         overflow: hidden;
+        height: 100vh;
       }
 
       #app-loader {
         position: fixed;
         inset: 0;
         z-index: 9999;
-        background: #101010;
+        background: black;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 20px;
-        transition: opacity 0.6s ease;
+        transition: transform 1.5s ease;
         pointer-events: none;
         user-select: none;
       }
 
       #app-loader.app-loader--hidden {
-        opacity: 0;
+        transform: translateY(-100%);
+        /* opacity: 0; */
+      }
+
+      #app-loader.app-loader--hidden .app-loader__progress-wrap {
+        display: none;
       }
 
       .app-loader__svg {
@@ -62,33 +72,28 @@ const { title = "maysky", description = "Personal website" } = Astro.props;
       }
 
       @keyframes arc-cw {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       @keyframes arc-ccw {
-        to { transform: rotate(-360deg); }
+        to {
+          transform: rotate(-360deg);
+        }
       }
 
       .app-loader__label {
         font-family: "JetBrains Mono", "Courier New", monospace;
-        font-size: 11px;
-        letter-spacing: 0.2em;
+        font-size: 20px;
+        letter-spacing: -0.02em;
         text-transform: uppercase;
         color: #333333;
       }
 
-      .app-loader__dot {
-        opacity: 0;
-        animation: dot-pulse 1.5s ease-in-out infinite;
-      }
-
-      .app-loader__dot--1 { animation-delay: 0.1s; }
-      .app-loader__dot--2 { animation-delay: 0.35s; }
-      .app-loader__dot--3 { animation-delay: 0.6s; }
-
-      @keyframes dot-pulse {
-        0%, 100% { opacity: 0; }
-        45%, 55% { opacity: 1; }
+      .app-loader__spinner {
+        display: inline-block;
+        width: 1ch;
       }
 
       .app-loader__progress-wrap {
@@ -109,51 +114,60 @@ const { title = "maysky", description = "Personal website" } = Astro.props;
       }
 
       @keyframes progress-fill {
-        0%   { width: 0%; }
-        20%  { width: 28%; }
-        50%  { width: 58%; }
-        80%  { width: 80%; }
-        100% { width: 90%; }
+        0% {
+          width: 0%;
+        }
+        20% {
+          width: 28%;
+        }
+        50% {
+          width: 58%;
+        }
+        80% {
+          width: 80%;
+        }
+        100% {
+          width: 90%;
+        }
       }
     </style>
   </head>
   <body>
     <div id="app-loader">
       <svg class="app-loader__svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Corner brackets -->
-        <path d="M 8 22 L 8 8 L 22 8"   stroke="#222" stroke-width="1.5" stroke-linecap="square" fill="none"/>
-        <path d="M 112 22 L 112 8 L 98 8" stroke="#222" stroke-width="1.5" stroke-linecap="square" fill="none"/>
-        <path d="M 8 98 L 8 112 L 22 112"  stroke="#222" stroke-width="1.5" stroke-linecap="square" fill="none"/>
-        <path d="M 112 98 L 112 112 L 98 112" stroke="#222" stroke-width="1.5" stroke-linecap="square" fill="none"/>
-
         <!-- Outer track -->
-        <circle cx="60" cy="60" r="48" stroke="#1c1c1c" stroke-width="1"/>
+        <circle cx="60" cy="60" r="48" stroke="#1c1c1c" stroke-width="1"></circle>
         <!-- Outer arc: circ≈301, 3/4 arc -->
-        <circle class="app-loader__arc-outer" cx="60" cy="60" r="48"
-          stroke="#484848" stroke-width="1" stroke-linecap="round"
-          stroke-dasharray="226 76"/>
+        <circle
+          class="app-loader__arc-outer"
+          cx="60"
+          cy="60"
+          r="48"
+          stroke="#484848"
+          stroke-width="1"
+          stroke-linecap="round"
+          stroke-dasharray="226 76"></circle>
 
         <!-- Inner track -->
-        <circle cx="60" cy="60" r="32" stroke="#1c1c1c" stroke-width="1"/>
+        <circle cx="60" cy="60" r="32" stroke="#1c1c1c" stroke-width="1"></circle>
         <!-- Inner arc: circ≈201, ~1/3 arc -->
-        <circle class="app-loader__arc-inner" cx="60" cy="60" r="32"
-          stroke="#d0d0d0" stroke-width="1.5" stroke-linecap="round"
-          stroke-dasharray="70 131"/>
+        <circle
+          class="app-loader__arc-inner"
+          cx="60"
+          cy="60"
+          r="32"
+          stroke="#d0d0d0"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-dasharray="70 131"></circle>
 
         <!-- Center fill -->
-        <circle cx="60" cy="60" r="19" fill="#101010"/>
-
-        <!-- >_ prompt -->
-        <text x="60" y="65" text-anchor="middle"
-          font-family="JetBrains Mono, Courier New, monospace"
-          font-size="13" font-weight="700" fill="#888888">&gt;_</text>
+        <circle cx="60" cy="60" r="19" fill="#101010"></circle>
       </svg>
 
       <p class="app-loader__label">
-        initializing
-        <span class="app-loader__dot app-loader__dot--1">.</span>
-        <span class="app-loader__dot app-loader__dot--2">.</span>
-        <span class="app-loader__dot app-loader__dot--3">.</span>
+        <span class="app-loader__label-text">loading</span>
+        <span class="app-loader__spinner"></span>
       </p>
 
       <div class="app-loader__progress-wrap">
@@ -162,35 +176,41 @@ const { title = "maysky", description = "Personal website" } = Astro.props;
     </div>
 
     <script is:inline>
-      document.documentElement.classList.add('app-loading');
+      (async function () {
+        document.documentElement.classList.add("app-loading");
 
-      Promise.all([
-        document.fonts.ready,
-        new Promise(function(r) { window.addEventListener('load', r, { once: true }); }),
-        new Promise(function(r) {
-          window.addEventListener('app:scene-ready', r, { once: true });
-          setTimeout(r, 10000);
-        })
-      ]).then(function() {
-        requestAnimationFrame(function() {
-          requestAnimationFrame(function() {
-            var loader = document.getElementById('app-loader');
+        const spinnerEl = document.querySelector(".app-loader__spinner");
+        const spinnerFrames = ["/", "|", "\\", "-"];
+        let spinnerIdx = 0;
+        const spinnerInterval = setInterval(() => {
+          spinnerEl.textContent = spinnerFrames[spinnerIdx++ % 4];
+        }, 120);
+
+        await Promise.all([
+          document.fonts.ready,
+          new Promise((r) => {
+            window.addEventListener("load", r, { once: true });
+          }),
+          new Promise((r) => {
+            window.addEventListener("app:scene-ready", r, { once: true });
+            setTimeout(r, 10000);
+          }),
+        ]);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const loader = document.getElementById("app-loader");
             if (!loader) return;
-            var bar = loader.querySelector('.app-loader__progress-bar');
-            if (bar) {
-              bar.style.animation = 'none';
-              bar.style.width = '100%';
-            }
-            setTimeout(function() {
-              document.documentElement.classList.remove('app-loading');
-              loader.classList.add('app-loader--hidden');
-              loader.addEventListener('transitionend', function() {
-                loader.remove();
-              }, { once: true });
+            clearInterval(spinnerInterval);
+
+            setTimeout(() => {
+              document.documentElement.classList.remove("app-loading");
+              loader.classList.add("app-loader--hidden");
+              loader.addEventListener("transitionend", loader.remove, { once: true });
             }, 280);
           });
         });
-      });
+      })();
     </script>
 
     <slot />

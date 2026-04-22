@@ -7,9 +7,9 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  duration: {
+  speed: {
     type: Number,
-    default: 1200,
+    default: 100,
   },
   keepCursor: {
     type: Boolean,
@@ -25,7 +25,10 @@ const ease = cubicBezier(EASING);
 
 const show = () => {
   const total = props.text.length;
-  const duration = props.duration;
+  const visibleLength = props.text
+    .replace(/<[^>]*>/g, "")
+    .replace(/&[a-z#\d]+;/gi, "x").length;
+  const duration = (visibleLength / props.speed) * 1000;
   const start = performance.now();
 
   const animate = (now) => {
