@@ -60,11 +60,19 @@ onUnmounted(() => {
     color: #b4b4b4;
     margin-top: -1.25rem;
 
+    @media #{$media-mobile} {
+      margin-top: -0.5rem;
+    }
+
     span {
       flex-basis: 0;
       flex-shrink: 0;
       flex-grow: 1;
-      padding-left: 0.5rem;
+      padding-left: 0.45rem;
+
+      @media #{$media-mobile} {
+        padding-left: 0.2rem;
+      }
     }
   }
 
