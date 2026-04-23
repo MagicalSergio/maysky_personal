@@ -298,7 +298,7 @@ onUnmounted(() => {
   }
 
   &__item-date {
-    margin-left: 2rem;
+    margin-left: 7rem;
     background: $color-bg-add-2;
     color: $color-font-add-1;
     font-weight: 700;
