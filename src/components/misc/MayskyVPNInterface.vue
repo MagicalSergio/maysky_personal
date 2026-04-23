@@ -147,7 +147,7 @@ const classes = computed(() => ({
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  gap: 4rem;
   border-radius: 1rem;
   height: 100%;
   letter-spacing: 0;
