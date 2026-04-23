@@ -59,12 +59,12 @@ onUnmounted(() => {
     font-weight: 700;
     color: #b4b4b4;
     margin-top: -1.25rem;
-    padding-left: 0.45rem;
 
     span {
       flex-basis: 0;
       flex-shrink: 0;
       flex-grow: 1;
+      padding-left: 0.5rem;
     }
   }
 
