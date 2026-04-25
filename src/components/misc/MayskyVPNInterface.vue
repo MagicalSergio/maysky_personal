@@ -20,15 +20,15 @@ const connect = async () => {
 };
 
 const getEl = () => powerIconRef.value?.$el ?? powerIconRef.value;
-
+const defaultTransform = "translate(-50%, -50%)";
 const startSpin = () => {
   clearInterval(rampInterval);
   const el = getEl();
   if (!el) return;
-  el.style.transform = "";
+  el.style.transform = defaultTransform;
   el.style.transition = "";
 
-  spinAnimation = el.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }], {
+  spinAnimation = el.animate([{ transform: `rotate(0deg) ${defaultTransform}` }, { transform: `rotate(360deg) ${defaultTransform}` }], {
     duration: 800,
     iterations: Infinity,
     easing: "linear",
@@ -59,15 +59,17 @@ const stopSpin = () => {
       if (!el || currentAngle < 1) return resolve();
 
       const targetAngle = currentAngle >= 180 ? 360 : 0;
-      el.style.transform = `rotate(${currentAngle}deg)`;
+      el.style.transform = `rotate(${currentAngle}deg) ${defaultTransform}`;
       requestAnimationFrame(() => {
-        el.style.transition = "transform 0.25s ease-out";
-        el.style.transform = `rotate(${targetAngle}deg)`;
-        setTimeout(() => {
-          el.style.transform = "";
-          el.style.transition = "";
-          resolve();
-        }, 270);
+        requestAnimationFrame(() => {
+          el.style.transition = "transform 0.25s ease-out";
+          el.style.transform = `rotate(${targetAngle}deg) ${defaultTransform}`;
+          setTimeout(() => {
+            el.style.transform = `${defaultTransform}`;
+            el.style.transition = "";
+            resolve();
+          }, 270);
+        });
       });
     }, 40);
   });
@@ -202,17 +204,20 @@ const classes = computed(() => ({
   }
 
   &__power-icon {
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 3.25rem;
+    height: 3.25rem;
     color: #7c3131;
-    transform-origin: center;
+    transform-origin: -0.01rem -0.01rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    will-change: transform;
   }
 
   &__bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     gap: 1rem;
+    position: relative;
   }
 
   &__identic {

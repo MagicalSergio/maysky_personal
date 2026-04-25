@@ -21,6 +21,7 @@ const loadAnimation = () => {
     renderer: "svg",
     loop: true,
     path: "/src/public/party-bot-anim.json",
+    autoplay: false,
   });
 
   lottie.stop("chat");
